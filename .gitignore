@@ -19,6 +19,11 @@ nunit-*.xml
 [Rr]eleasePS/
 dlldata.c
 
+# .NET build files
+obj/
+*.exe
+*.dll
+
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
 
@@ -451,3 +456,5 @@ $RECYCLE.BIN/
 */**/bin/Release   
 */**/obj/Debug   
 */**/obj/Release   
+
+appsettings.json
