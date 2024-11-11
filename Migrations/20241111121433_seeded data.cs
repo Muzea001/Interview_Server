@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Interview_Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class seededdata : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -123,6 +125,15 @@ namespace Interview_Server.Migrations
                         principalTable: "UserInterviews",
                         principalColumn: "UserInterviewId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Email", "LogbookId", "Mobile", "PasswordHash", "Username" },
+                values: new object[,]
+                {
+                    { 1, "john@example.com", 1, "1234", "AQAAAAIAAYagAAAAEPf0BPaeT0b+qs7RuyHK1Z/4Xjhtn0f9/oN8UAvZ0/pM9OnXznGa0KXir922sl3Gbg==", "John Doe" },
+                    { 2, "jane@example.com", 2, "1881", "AQAAAAIAAYagAAAAEP8WVY7easC27anrD3gX9WnAiDgY3I01GZy4R7GWjBbhya9wDyjJZlFk8AItFb9pBA==", "Jane Smith" }
                 });
 
             migrationBuilder.CreateIndex(

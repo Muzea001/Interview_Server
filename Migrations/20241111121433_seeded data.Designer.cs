@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241111101042_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241111121433_seeded data")]
+    partial class seededdata
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,6 +148,26 @@ namespace Interview_Server.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "john@example.com",
+                            LogbookId = 1,
+                            Mobile = "1234",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPf0BPaeT0b+qs7RuyHK1Z/4Xjhtn0f9/oN8UAvZ0/pM9OnXznGa0KXir922sl3Gbg==",
+                            Username = "John Doe"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "jane@example.com",
+                            LogbookId = 2,
+                            Mobile = "1881",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP8WVY7easC27anrD3gX9WnAiDgY3I01GZy4R7GWjBbhya9wDyjJZlFk8AItFb9pBA==",
+                            Username = "Jane Smith"
+                        });
                 });
 
             modelBuilder.Entity("UserInterview", b =>

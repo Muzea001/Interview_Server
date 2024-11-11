@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241111121646_updated data")]
+    partial class updateddata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,8 +156,8 @@ namespace Interview_Server.Migrations
                             Email = "ali@example.com",
                             LogbookId = 1,
                             Mobile = "1234",
-                            PasswordHash = "AQAAAAIAAYagAAAAECdWjUPosBQOXnfTia45iq8ALvYL9lGXpUEFZ9zNEluSsEdrCeeROV+GmbPEbDvROw==",
-                            Username = "Ali Khan"
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ91hjAbshFeSGUvyPTqYJx+N1IR5YHx7oesLxIOSyk9xYW4rGu28QvudrXwY5zqaQ==",
+                            Username = "Ali Haider Khan"
                         },
                         new
                         {
@@ -162,26 +165,8 @@ namespace Interview_Server.Migrations
                             Email = "muaath@example.com",
                             LogbookId = 2,
                             Mobile = "1881",
-                            PasswordHash = "AQAAAAIAAYagAAAAEATRDu7yVbHy1Sl0qYl34KqD4xUvgItRTS0dwtPj6/KHDvdxqD89zHLSLNUNBclaMg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHCdsx0Cx0l2+jbt4IZY31N7oUhb65XxA3+FsL8FN/5bBE/bz0C7z7JXRRStF9JbbA==",
                             Username = "Muaath Zerouga"
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Email = "john@example.com",
-                            LogbookId = 3,
-                            Mobile = "123",
-                            PasswordHash = "AQAAAAIAAYagAAAAECs4CZIyZEsA8/YgGpeaUYlWdEzJ3/qVyk7+NSam9Zp2bObY6BP0cX1EXaIKiF0YCg==",
-                            Username = "John Ferdie"
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            Email = "magnus@example.com",
-                            LogbookId = 4,
-                            Mobile = "786",
-                            PasswordHash = "AQAAAAIAAYagAAAAELZXaa16Q5y94U7PLsL6V2GtDndK+BnGLoHH2OJQHRZG9yNNe7ODm1NCllcpYJTcsA==",
-                            Username = "Magnus Brandsegg"
                         });
                 });
 
