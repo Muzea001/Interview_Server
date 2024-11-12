@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     /// <inheritdoc />
-    public partial class seededdata : Migration
+    public partial class final : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,9 +55,9 @@ namespace Interview_Server.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     InterviewId = table.Column<int>(type: "integer", nullable: false),
-                    Role = table.Column<int>(type: "integer", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
                     InterviewTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -128,13 +128,39 @@ namespace Interview_Server.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Interviews",
+                columns: new[] { "InterviewId", "Address", "CompanyName", "Description", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Kongens gate 6", "PayEx", "Technical interview after a short speedinterview", "Technical Interview" },
+                    { 2, "Idrettsveien 8", "Nordre Follo Kommune", "Bli kjent intervju", "Førstegangsintervju" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Email", "LogbookId", "Mobile", "PasswordHash", "Username" },
                 values: new object[,]
                 {
-                    { 1, "john@example.com", 1, "1234", "AQAAAAIAAYagAAAAEPf0BPaeT0b+qs7RuyHK1Z/4Xjhtn0f9/oN8UAvZ0/pM9OnXznGa0KXir922sl3Gbg==", "John Doe" },
-                    { 2, "jane@example.com", 2, "1881", "AQAAAAIAAYagAAAAEP8WVY7easC27anrD3gX9WnAiDgY3I01GZy4R7GWjBbhya9wDyjJZlFk8AItFb9pBA==", "Jane Smith" }
+                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEOZszi4gKqJzlQvjcY5Og92KnldgiyBt0sHqjI//BfuEkqEiZZ2gB+BQXXBrHQ6Naw==", "Ali Khan" },
+                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEMrhSbS+JtweMenpeWDfbFHirWOrLP45TJJY4Q2DLmpi4utqbTCbaXVSoouCg43YIA==", "Muaath Zerouga" },
+                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAEKiCSfTaIOEvyuMxCPireJDR7SlYJLQJCJV5/QMkrVO7Gg0H8aOUlgoES/nQi2M0JQ==", "John Ferdie" },
+                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEJiPAImFwTzy5jndnssJY6WLeGi9iPFd/334APSI606kGtD+R9h5dh+QkMt7FtcrLg==", "Magnus Brandsegg" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "UserInterviews",
+                columns: new[] { "UserInterviewId", "InterviewId", "InterviewTime", "Role", "Status", "UserId" },
+                values: new object[] { 1, 1, new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Logbooks",
+                columns: new[] { "LogbookId", "Content", "Time", "Title", "UserId", "UserInterviewId" },
+                values: new object[] { 1, "Overall Good Interview. Need to improve something.", new TimeOnly(14, 30, 0), "Logbook from first interview", 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Notes",
+                columns: new[] { "NoteId", "Content", "Status", "Title", "UserInterviewId" },
+                values: new object[] { 1, "Need to smile more on interviews", "Reviewed", "Quick note from first interview", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logbooks_UserId",
