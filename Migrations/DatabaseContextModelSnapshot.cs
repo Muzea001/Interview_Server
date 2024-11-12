@@ -192,7 +192,7 @@ namespace Interview_Server.Migrations
                             Email = "ali@example.com",
                             LogbookId = 1,
                             Mobile = "1234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOZszi4gKqJzlQvjcY5Og92KnldgiyBt0sHqjI//BfuEkqEiZZ2gB+BQXXBrHQ6Naw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFeaklhZWC73D6e3dNZiUS8ktbqzHZsWpTlAS/hGsoyxQpjMdLbu6wXeDtR+GKIATg==",
                             Username = "Ali Khan"
                         },
                         new
@@ -201,7 +201,7 @@ namespace Interview_Server.Migrations
                             Email = "muaath@example.com",
                             LogbookId = 2,
                             Mobile = "1881",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMrhSbS+JtweMenpeWDfbFHirWOrLP45TJJY4Q2DLmpi4utqbTCbaXVSoouCg43YIA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEISzAO6CGe2IVjhYrKjkqm9R9OmdkYO2BX7dYCPsfiKOQZUARY7NBag5CVON+rTVMQ==",
                             Username = "Muaath Zerouga"
                         },
                         new
@@ -210,7 +210,7 @@ namespace Interview_Server.Migrations
                             Email = "john@example.com",
                             LogbookId = 3,
                             Mobile = "123",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKiCSfTaIOEvyuMxCPireJDR7SlYJLQJCJV5/QMkrVO7Gg0H8aOUlgoES/nQi2M0JQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOOPxz5qbfbU4YUUL21+wTctiKqjlovO1/oSJryhKrSdGSiPcJhqvnH4rdhTrjAsEw==",
                             Username = "John Ferdie"
                         },
                         new
@@ -219,7 +219,7 @@ namespace Interview_Server.Migrations
                             Email = "magnus@example.com",
                             LogbookId = 4,
                             Mobile = "786",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJiPAImFwTzy5jndnssJY6WLeGi9iPFd/334APSI606kGtD+R9h5dh+QkMt7FtcrLg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPBjbcJAsCRMif9hla58OIWdKruD96qKs/lT0w5qiWuYsMkkLhReEuZyQ4/l9GhEBg==",
                             Username = "Magnus Brandsegg"
                         });
                 });

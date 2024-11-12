@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     /// <inheritdoc />
-    public partial class final : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -141,10 +141,10 @@ namespace Interview_Server.Migrations
                 columns: new[] { "UserId", "Email", "LogbookId", "Mobile", "PasswordHash", "Username" },
                 values: new object[,]
                 {
-                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEOZszi4gKqJzlQvjcY5Og92KnldgiyBt0sHqjI//BfuEkqEiZZ2gB+BQXXBrHQ6Naw==", "Ali Khan" },
-                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEMrhSbS+JtweMenpeWDfbFHirWOrLP45TJJY4Q2DLmpi4utqbTCbaXVSoouCg43YIA==", "Muaath Zerouga" },
-                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAEKiCSfTaIOEvyuMxCPireJDR7SlYJLQJCJV5/QMkrVO7Gg0H8aOUlgoES/nQi2M0JQ==", "John Ferdie" },
-                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEJiPAImFwTzy5jndnssJY6WLeGi9iPFd/334APSI606kGtD+R9h5dh+QkMt7FtcrLg==", "Magnus Brandsegg" }
+                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEFeaklhZWC73D6e3dNZiUS8ktbqzHZsWpTlAS/hGsoyxQpjMdLbu6wXeDtR+GKIATg==", "Ali Khan" },
+                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEISzAO6CGe2IVjhYrKjkqm9R9OmdkYO2BX7dYCPsfiKOQZUARY7NBag5CVON+rTVMQ==", "Muaath Zerouga" },
+                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAEOOPxz5qbfbU4YUUL21+wTctiKqjlovO1/oSJryhKrSdGSiPcJhqvnH4rdhTrjAsEw==", "John Ferdie" },
+                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEPBjbcJAsCRMif9hla58OIWdKruD96qKs/lT0w5qiWuYsMkkLhReEuZyQ4/l9GhEBg==", "Magnus Brandsegg" }
                 });
 
             migrationBuilder.InsertData(
