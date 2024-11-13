@@ -12,6 +12,8 @@ namespace Interview_Server.DTOs
 
         public int duration { get; set; }
 
+        public Enum status { get; set; }
+
         public string companyName { get; set; }
 
         public List<Note> notes { get; set; }
