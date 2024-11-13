@@ -69,6 +69,12 @@ namespace Interview_Server.Repositories
                 query = query.Include(includeProperty);
             }
 
+            var idProperty = typeof(TEntity).GetProperty("Id");
+            if (idProperty == null)
+            {
+                throw new InvalidOperationException("Entity does not have an Id property.");
+            }
+
             return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
         }
 

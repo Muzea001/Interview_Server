@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241113095457_initialCreate")]
+    partial class initialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,7 +195,7 @@ namespace Interview_Server.Migrations
                             Email = "ali@example.com",
                             LogbookId = 1,
                             Mobile = "1234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMUxNL4P/WnD0wWJMUPFjf6zlUmhQ0Ay9D5XIPlxDp1zSu3Pd8IG8xJyIC8law3Piw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPSc4wNR4girynWl18H6d77IS8t+ATyGgAJlVyKSIlObLMCzWSx+n5AZKgzRrZpzdA==",
                             Username = "Ali Khan"
                         },
                         new
@@ -201,7 +204,7 @@ namespace Interview_Server.Migrations
                             Email = "muaath@example.com",
                             LogbookId = 2,
                             Mobile = "1881",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOJUesdY6WENCJ1kByVPhHUZbu7Y+4Ez1urqTY7yRD4kKUXq0eD88GWSGq5HgnFyvg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPp9YbwMQYFPyzcKkvrw/CRFNw/fDCod5RdkWwCW12jdoB8qpxN7nmI4azGdqZuQqg==",
                             Username = "Muaath Zerouga"
                         },
                         new
@@ -210,7 +213,7 @@ namespace Interview_Server.Migrations
                             Email = "john@example.com",
                             LogbookId = 3,
                             Mobile = "123",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAO255Ct7sJVKG/wke49idyOVhnbtOn36ZiyAz5QUrg9sAtR7RVD1nxkA/F6z3q7Cg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECzQ/woUf17bR78lZo0HF7IGuQEyxzU3qz6btPG9GIwHQ1MCNQg7uRWMQaH8VJt6bw==",
                             Username = "John Ferdie"
                         },
                         new
@@ -219,7 +222,7 @@ namespace Interview_Server.Migrations
                             Email = "magnus@example.com",
                             LogbookId = 4,
                             Mobile = "786",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK3wCpvYlrr6u1GOJC7jTexsvUi3CHi1pAXBfGhnzRrEntyJ0jPB83xtt54wWoHy6w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAkbEc79745+Jx3blcDpzUNHV/CjSNVc41eKazaW1uBRDK7B1G1x6brxJuWT37G6vw==",
                             Username = "Magnus Brandsegg"
                         });
                 });
@@ -231,9 +234,6 @@ namespace Interview_Server.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DurationInMinutes")
-                        .HasColumnType("integer");
 
                     b.Property<int>("InterviewId")
                         .HasColumnType("integer");
@@ -264,7 +264,6 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            DurationInMinutes = 120,
                             InterviewId = 1,
                             InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc),
                             Role = "Interviewee",

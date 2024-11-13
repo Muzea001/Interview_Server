@@ -2,7 +2,7 @@
 {
     public class Logbook
     {
-        public int LogbookId { get; set; }
+        public int Id { get; set; }
 
         public int UserId { get; set; }
 

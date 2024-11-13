@@ -18,7 +18,7 @@ namespace Interview_Server.Migrations
                 name: "Interviews",
                 columns: table => new
                 {
-                    InterviewId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CompanyName = table.Column<string>(type: "text", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
@@ -27,14 +27,14 @@ namespace Interview_Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Interviews", x => x.InterviewId);
+                    table.PrimaryKey("PK_Interviews", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
@@ -44,14 +44,14 @@ namespace Interview_Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserInterviews",
                 columns: table => new
                 {
-                    UserInterviewId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     InterviewId = table.Column<int>(type: "integer", nullable: false),
@@ -61,18 +61,18 @@ namespace Interview_Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserInterviews", x => x.UserInterviewId);
+                    table.PrimaryKey("PK_UserInterviews", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserInterviews_Interviews_InterviewId",
                         column: x => x.InterviewId,
                         principalTable: "Interviews",
-                        principalColumn: "InterviewId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserInterviews_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -80,7 +80,7 @@ namespace Interview_Server.Migrations
                 name: "Logbooks",
                 columns: table => new
                 {
-                    LogbookId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     UserInterviewId = table.Column<int>(type: "integer", nullable: false),
@@ -90,18 +90,18 @@ namespace Interview_Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logbooks", x => x.LogbookId);
+                    table.PrimaryKey("PK_Logbooks", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Logbooks_UserInterviews_UserInterviewId",
                         column: x => x.UserInterviewId,
                         principalTable: "UserInterviews",
-                        principalColumn: "UserInterviewId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Logbooks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -109,7 +109,7 @@ namespace Interview_Server.Migrations
                 name: "Notes",
                 columns: table => new
                 {
-                    NoteId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
@@ -118,18 +118,18 @@ namespace Interview_Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notes", x => x.NoteId);
+                    table.PrimaryKey("PK_Notes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Notes_UserInterviews_UserInterviewId",
                         column: x => x.UserInterviewId,
                         principalTable: "UserInterviews",
-                        principalColumn: "UserInterviewId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Interviews",
-                columns: new[] { "InterviewId", "Address", "CompanyName", "Description", "Title" },
+                columns: new[] { "Id", "Address", "CompanyName", "Description", "Title" },
                 values: new object[,]
                 {
                     { 1, "Kongens gate 6", "PayEx", "Technical interview after a short speedinterview", "Technical Interview" },
@@ -138,28 +138,28 @@ namespace Interview_Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "Email", "LogbookId", "Mobile", "PasswordHash", "Username" },
+                columns: new[] { "Id", "Email", "LogbookId", "Mobile", "PasswordHash", "Username" },
                 values: new object[,]
                 {
-                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEFeaklhZWC73D6e3dNZiUS8ktbqzHZsWpTlAS/hGsoyxQpjMdLbu6wXeDtR+GKIATg==", "Ali Khan" },
-                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEISzAO6CGe2IVjhYrKjkqm9R9OmdkYO2BX7dYCPsfiKOQZUARY7NBag5CVON+rTVMQ==", "Muaath Zerouga" },
-                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAEOOPxz5qbfbU4YUUL21+wTctiKqjlovO1/oSJryhKrSdGSiPcJhqvnH4rdhTrjAsEw==", "John Ferdie" },
-                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEPBjbcJAsCRMif9hla58OIWdKruD96qKs/lT0w5qiWuYsMkkLhReEuZyQ4/l9GhEBg==", "Magnus Brandsegg" }
+                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEPSc4wNR4girynWl18H6d77IS8t+ATyGgAJlVyKSIlObLMCzWSx+n5AZKgzRrZpzdA==", "Ali Khan" },
+                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEPp9YbwMQYFPyzcKkvrw/CRFNw/fDCod5RdkWwCW12jdoB8qpxN7nmI4azGdqZuQqg==", "Muaath Zerouga" },
+                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAECzQ/woUf17bR78lZo0HF7IGuQEyxzU3qz6btPG9GIwHQ1MCNQg7uRWMQaH8VJt6bw==", "John Ferdie" },
+                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEAkbEc79745+Jx3blcDpzUNHV/CjSNVc41eKazaW1uBRDK7B1G1x6brxJuWT37G6vw==", "Magnus Brandsegg" }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserInterviews",
-                columns: new[] { "UserInterviewId", "InterviewId", "InterviewTime", "Role", "Status", "UserId" },
+                columns: new[] { "Id", "InterviewId", "InterviewTime", "Role", "Status", "UserId" },
                 values: new object[] { 1, 1, new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 1 });
 
             migrationBuilder.InsertData(
                 table: "Logbooks",
-                columns: new[] { "LogbookId", "Content", "Time", "Title", "UserId", "UserInterviewId" },
+                columns: new[] { "Id", "Content", "Time", "Title", "UserId", "UserInterviewId" },
                 values: new object[] { 1, "Overall Good Interview. Need to improve something.", new TimeOnly(14, 30, 0), "Logbook from first interview", 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Notes",
-                columns: new[] { "NoteId", "Content", "Status", "Title", "UserInterviewId" },
+                columns: new[] { "Id", "Content", "Status", "Title", "UserInterviewId" },
                 values: new object[] { 1, "Need to smile more on interviews", "Reviewed", "Quick note from first interview", 1 });
 
             migrationBuilder.CreateIndex(

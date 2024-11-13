@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Interview_Server.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Interview_Server.Repositories;
 
 namespace Interview_Server.Controllers
 {
@@ -14,7 +12,7 @@ namespace Interview_Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IRepository<User> _UserRepository;
-        public UserController(IRepository<User> repository )
+        public UserController(IRepository<User> repository)
         {
             _UserRepository = repository;
         }
@@ -22,38 +20,32 @@ namespace Interview_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
-            var users = await _UserRepository.GetAllAsync();
-
+            var users = await _UserRepository.GetAllAsync(u => u.UserInterviews);
             return Ok(users);
         }
 
-        [HttpGet("{UserId}")]
-        public async Task<ActionResult<User>> GetUserById(int UserId)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUserById(int id)
         {
-            var user = await _UserRepository.GetByIdAsync(UserId);
-
+            var user = await _UserRepository.GetByIdAsync(id, u => u.UserInterviews);
             if (user == null)
             {
                 return NotFound();
             }
-
             return Ok(user);
         }
-
-
-
 
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser(User user)
         {
             await _UserRepository.AddAsync(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<User>> EditUser(int id, User user)
         {
-            if (id != user.UserId)
+            if (id != user.Id)
             {
                 return BadRequest("UserId must match");
             }

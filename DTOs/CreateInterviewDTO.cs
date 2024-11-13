@@ -1,8 +1,6 @@
-﻿using Interview_Server.Models;
-
-namespace Interview_Server.DTOs
+﻿namespace Interview_Server.DTOs
 {
-    public class GetInterviewDTO
+    public class CreateInterviewDTO
     {
         public string title { get; set; }
         public string description { get; set; }
@@ -13,8 +11,5 @@ namespace Interview_Server.DTOs
         public int duration { get; set; }
 
         public string companyName { get; set; }
-
-        public List<Note> notes { get; set; }
-
     }
 }

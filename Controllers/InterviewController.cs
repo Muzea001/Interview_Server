@@ -46,13 +46,13 @@ namespace Interview_Server.Controllers
         public async Task<ActionResult<Interview>> createInterview(Interview interview)
         {
             var createdInterview = await _interviewRepository.AddAsync(interview);
-            return CreatedAtAction(nameof(getInterviewById), new { id = interview.InterviewId }, interview);
+            return CreatedAtAction(nameof(getInterviewById), new { id = interview.Id }, interview);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Interview>> editInterview(int id, Interview interview)
         {
-            if(id != interview.InterviewId)
+            if(id != interview.Id)
             {
                 return BadRequest("Incorrect id passed");
             }
@@ -72,7 +72,7 @@ namespace Interview_Server.Controllers
             {
                 return NotFound("Interview with this id not found");
             }
-            _interviewRepository.deleteAsync(interview.InterviewId);
+            _interviewRepository.deleteAsync(interview.Id);
             return Ok();
         }
 

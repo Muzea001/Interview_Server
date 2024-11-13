@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241112091740_initialCreate")]
-    partial class initialCreate
+    [Migration("20241113105649_addedDuration")]
+    partial class addedDuration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,11 @@ namespace Interview_Server.Migrations
 
             modelBuilder.Entity("Interview_Server.Models.Interview", b =>
                 {
-                    b.Property<int>("InterviewId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InterviewId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -48,14 +48,14 @@ namespace Interview_Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("InterviewId");
+                    b.HasKey("Id");
 
                     b.ToTable("Interviews");
 
                     b.HasData(
                         new
                         {
-                            InterviewId = 1,
+                            Id = 1,
                             Address = "Kongens gate 6",
                             CompanyName = "PayEx",
                             Description = "Technical interview after a short speedinterview",
@@ -63,7 +63,7 @@ namespace Interview_Server.Migrations
                         },
                         new
                         {
-                            InterviewId = 2,
+                            Id = 2,
                             Address = "Idrettsveien 8",
                             CompanyName = "Nordre Follo Kommune",
                             Description = "Bli kjent intervju",
@@ -73,11 +73,11 @@ namespace Interview_Server.Migrations
 
             modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
                 {
-                    b.Property<int>("LogbookId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LogbookId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -96,7 +96,7 @@ namespace Interview_Server.Migrations
                     b.Property<int>("UserInterviewId")
                         .HasColumnType("integer");
 
-                    b.HasKey("LogbookId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -108,7 +108,7 @@ namespace Interview_Server.Migrations
                     b.HasData(
                         new
                         {
-                            LogbookId = 1,
+                            Id = 1,
                             Content = "Overall Good Interview. Need to improve something.",
                             Time = new TimeOnly(14, 30, 0),
                             Title = "Logbook from first interview",
@@ -119,11 +119,11 @@ namespace Interview_Server.Migrations
 
             modelBuilder.Entity("Interview_Server.Models.Note", b =>
                 {
-                    b.Property<int>("NoteId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("NoteId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -140,7 +140,7 @@ namespace Interview_Server.Migrations
                     b.Property<int>("UserInterviewId")
                         .HasColumnType("integer");
 
-                    b.HasKey("NoteId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserInterviewId");
 
@@ -149,7 +149,7 @@ namespace Interview_Server.Migrations
                     b.HasData(
                         new
                         {
-                            NoteId = 1,
+                            Id = 1,
                             Content = "Need to smile more on interviews",
                             Status = "Reviewed",
                             Title = "Quick note from first interview",
@@ -159,11 +159,11 @@ namespace Interview_Server.Migrations
 
             modelBuilder.Entity("Interview_Server.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -184,56 +184,59 @@ namespace Interview_Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            UserId = 1,
+                            Id = 1,
                             Email = "ali@example.com",
                             LogbookId = 1,
                             Mobile = "1234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFeaklhZWC73D6e3dNZiUS8ktbqzHZsWpTlAS/hGsoyxQpjMdLbu6wXeDtR+GKIATg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMUxNL4P/WnD0wWJMUPFjf6zlUmhQ0Ay9D5XIPlxDp1zSu3Pd8IG8xJyIC8law3Piw==",
                             Username = "Ali Khan"
                         },
                         new
                         {
-                            UserId = 2,
+                            Id = 2,
                             Email = "muaath@example.com",
                             LogbookId = 2,
                             Mobile = "1881",
-                            PasswordHash = "AQAAAAIAAYagAAAAEISzAO6CGe2IVjhYrKjkqm9R9OmdkYO2BX7dYCPsfiKOQZUARY7NBag5CVON+rTVMQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOJUesdY6WENCJ1kByVPhHUZbu7Y+4Ez1urqTY7yRD4kKUXq0eD88GWSGq5HgnFyvg==",
                             Username = "Muaath Zerouga"
                         },
                         new
                         {
-                            UserId = 3,
+                            Id = 3,
                             Email = "john@example.com",
                             LogbookId = 3,
                             Mobile = "123",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOOPxz5qbfbU4YUUL21+wTctiKqjlovO1/oSJryhKrSdGSiPcJhqvnH4rdhTrjAsEw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAO255Ct7sJVKG/wke49idyOVhnbtOn36ZiyAz5QUrg9sAtR7RVD1nxkA/F6z3q7Cg==",
                             Username = "John Ferdie"
                         },
                         new
                         {
-                            UserId = 4,
+                            Id = 4,
                             Email = "magnus@example.com",
                             LogbookId = 4,
                             Mobile = "786",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPBjbcJAsCRMif9hla58OIWdKruD96qKs/lT0w5qiWuYsMkkLhReEuZyQ4/l9GhEBg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK3wCpvYlrr6u1GOJC7jTexsvUi3CHi1pAXBfGhnzRrEntyJ0jPB83xtt54wWoHy6w==",
                             Username = "Magnus Brandsegg"
                         });
                 });
 
             modelBuilder.Entity("UserInterview", b =>
                 {
-                    b.Property<int>("UserInterviewId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserInterviewId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DurationInMinutes")
+                        .HasColumnType("integer");
 
                     b.Property<int>("InterviewId")
                         .HasColumnType("integer");
@@ -252,7 +255,7 @@ namespace Interview_Server.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("UserInterviewId");
+                    b.HasKey("Id");
 
                     b.HasIndex("InterviewId");
 
@@ -263,7 +266,8 @@ namespace Interview_Server.Migrations
                     b.HasData(
                         new
                         {
-                            UserInterviewId = 1,
+                            Id = 1,
+                            DurationInMinutes = 120,
                             InterviewId = 1,
                             InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc),
                             Role = "Interviewee",
