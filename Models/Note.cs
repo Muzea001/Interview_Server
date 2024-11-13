@@ -12,7 +12,13 @@
 
         public UserInterview UserInterview { get; set; }
 
-        public string Status { get; set; }
+        public NoteStatus Status { get; set; }
 
+    }
+
+    public enum NoteStatus
+    {
+        Reviewed,
+        NotReviewed,
     }
 }

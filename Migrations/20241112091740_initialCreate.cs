@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Interview_Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,9 +55,9 @@ namespace Interview_Server.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     InterviewId = table.Column<int>(type: "integer", nullable: false),
-                    Role = table.Column<int>(type: "integer", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
                     InterviewTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,6 +126,41 @@ namespace Interview_Server.Migrations
                         principalColumn: "UserInterviewId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Interviews",
+                columns: new[] { "InterviewId", "Address", "CompanyName", "Description", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Kongens gate 6", "PayEx", "Technical interview after a short speedinterview", "Technical Interview" },
+                    { 2, "Idrettsveien 8", "Nordre Follo Kommune", "Bli kjent intervju", "Førstegangsintervju" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Email", "LogbookId", "Mobile", "PasswordHash", "Username" },
+                values: new object[,]
+                {
+                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEFeaklhZWC73D6e3dNZiUS8ktbqzHZsWpTlAS/hGsoyxQpjMdLbu6wXeDtR+GKIATg==", "Ali Khan" },
+                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEISzAO6CGe2IVjhYrKjkqm9R9OmdkYO2BX7dYCPsfiKOQZUARY7NBag5CVON+rTVMQ==", "Muaath Zerouga" },
+                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAEOOPxz5qbfbU4YUUL21+wTctiKqjlovO1/oSJryhKrSdGSiPcJhqvnH4rdhTrjAsEw==", "John Ferdie" },
+                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEPBjbcJAsCRMif9hla58OIWdKruD96qKs/lT0w5qiWuYsMkkLhReEuZyQ4/l9GhEBg==", "Magnus Brandsegg" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserInterviews",
+                columns: new[] { "UserInterviewId", "InterviewId", "InterviewTime", "Role", "Status", "UserId" },
+                values: new object[] { 1, 1, new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Logbooks",
+                columns: new[] { "LogbookId", "Content", "Time", "Title", "UserId", "UserInterviewId" },
+                values: new object[] { 1, "Overall Good Interview. Need to improve something.", new TimeOnly(14, 30, 0), "Logbook from first interview", 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Notes",
+                columns: new[] { "NoteId", "Content", "Status", "Title", "UserInterviewId" },
+                values: new object[] { 1, "Need to smile more on interviews", "Reviewed", "Quick note from first interview", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logbooks_UserId",

@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241111101042_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241112091740_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,24 @@ namespace Interview_Server.Migrations
                     b.HasKey("InterviewId");
 
                     b.ToTable("Interviews");
+
+                    b.HasData(
+                        new
+                        {
+                            InterviewId = 1,
+                            Address = "Kongens gate 6",
+                            CompanyName = "PayEx",
+                            Description = "Technical interview after a short speedinterview",
+                            Title = "Technical Interview"
+                        },
+                        new
+                        {
+                            InterviewId = 2,
+                            Address = "Idrettsveien 8",
+                            CompanyName = "Nordre Follo Kommune",
+                            Description = "Bli kjent intervju",
+                            Title = "Førstegangsintervju"
+                        });
                 });
 
             modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
@@ -86,6 +104,17 @@ namespace Interview_Server.Migrations
                     b.HasIndex("UserInterviewId");
 
                     b.ToTable("Logbooks");
+
+                    b.HasData(
+                        new
+                        {
+                            LogbookId = 1,
+                            Content = "Overall Good Interview. Need to improve something.",
+                            Time = new TimeOnly(14, 30, 0),
+                            Title = "Logbook from first interview",
+                            UserId = 1,
+                            UserInterviewId = 1
+                        });
                 });
 
             modelBuilder.Entity("Interview_Server.Models.Note", b =>
@@ -116,6 +145,16 @@ namespace Interview_Server.Migrations
                     b.HasIndex("UserInterviewId");
 
                     b.ToTable("Notes");
+
+                    b.HasData(
+                        new
+                        {
+                            NoteId = 1,
+                            Content = "Need to smile more on interviews",
+                            Status = "Reviewed",
+                            Title = "Quick note from first interview",
+                            UserInterviewId = 1
+                        });
                 });
 
             modelBuilder.Entity("Interview_Server.Models.User", b =>
@@ -148,6 +187,44 @@ namespace Interview_Server.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "ali@example.com",
+                            LogbookId = 1,
+                            Mobile = "1234",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFeaklhZWC73D6e3dNZiUS8ktbqzHZsWpTlAS/hGsoyxQpjMdLbu6wXeDtR+GKIATg==",
+                            Username = "Ali Khan"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "muaath@example.com",
+                            LogbookId = 2,
+                            Mobile = "1881",
+                            PasswordHash = "AQAAAAIAAYagAAAAEISzAO6CGe2IVjhYrKjkqm9R9OmdkYO2BX7dYCPsfiKOQZUARY7NBag5CVON+rTVMQ==",
+                            Username = "Muaath Zerouga"
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Email = "john@example.com",
+                            LogbookId = 3,
+                            Mobile = "123",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOOPxz5qbfbU4YUUL21+wTctiKqjlovO1/oSJryhKrSdGSiPcJhqvnH4rdhTrjAsEw==",
+                            Username = "John Ferdie"
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Email = "magnus@example.com",
+                            LogbookId = 4,
+                            Mobile = "786",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPBjbcJAsCRMif9hla58OIWdKruD96qKs/lT0w5qiWuYsMkkLhReEuZyQ4/l9GhEBg==",
+                            Username = "Magnus Brandsegg"
+                        });
                 });
 
             modelBuilder.Entity("UserInterview", b =>
@@ -164,11 +241,13 @@ namespace Interview_Server.Migrations
                     b.Property<DateTime>("InterviewTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("integer");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -180,6 +259,17 @@ namespace Interview_Server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserInterviews");
+
+                    b.HasData(
+                        new
+                        {
+                            UserInterviewId = 1,
+                            InterviewId = 1,
+                            InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc),
+                            Role = "Interviewee",
+                            Status = "Scheduled",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
