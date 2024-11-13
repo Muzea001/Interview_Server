@@ -27,10 +27,10 @@ namespace Interview_Server.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        [HttpGet("{UserId}")]
+        public async Task<ActionResult<User>> GetUserById(int UserId)
         {
-            var user = await _UserRepository.GetByIdAsync(id, u => u.UserInterviews);
+            var user = await _UserRepository.GetByIdAsync(UserId);
 
             if (user == null)
             {
