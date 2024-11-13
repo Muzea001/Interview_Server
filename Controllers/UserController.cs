@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Interview_Server.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Interview_Server.Repositories;
 
 namespace Interview_Server.Controllers
 {
@@ -12,7 +14,7 @@ namespace Interview_Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IRepository<User> _UserRepository;
-        public UserController(IRepository<User> repository)
+        public UserController(IRepository<User> repository )
         {
             _UserRepository = repository;
         }
@@ -20,7 +22,8 @@ namespace Interview_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
-            var users = await _UserRepository.GetAllAsync(u => u.UserInterviews);
+            var users = await _UserRepository.GetAllAsync();
+
             return Ok(users);
         }
 
@@ -28,12 +31,17 @@ namespace Interview_Server.Controllers
         public async Task<ActionResult<User>> GetUserById(int id)
         {
             var user = await _UserRepository.GetByIdAsync(id, u => u.UserInterviews);
+
             if (user == null)
             {
                 return NotFound();
             }
+
             return Ok(user);
         }
+
+
+
 
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser(User user)

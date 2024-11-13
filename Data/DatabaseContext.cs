@@ -36,6 +36,8 @@ public class DatabaseContext : DbContext
             .HasForeignKey<Logbook>(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<UserInterview>()
+       .HasKey(ui => ui.UserInterviewId);
     }
 
         public DbSet<User> Users { get; set; }
