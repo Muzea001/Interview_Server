@@ -12,7 +12,7 @@ namespace Interview_Server.DTOs
 
         public int duration { get; set; }
 
-        public Enum status { get; set; }
+        public InterviewStatus status { get; set; }
 
         public string companyName { get; set; }
 

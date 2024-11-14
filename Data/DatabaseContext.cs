@@ -56,6 +56,12 @@ public class DatabaseContext : DbContext
             .HasForeignKey(p => p.UserInterviewId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<Log>()
+            .HasOne(p => p.Logbook)
+            .WithMany(p => p.Logs)
+            .HasForeignKey(p => p.LogbookId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<Logbook>()
             .HasOne(p => p.User)
             .WithOne(p => p.Logbook)
@@ -81,10 +87,15 @@ public class DatabaseContext : DbContext
 
             new UserInterview() { Id = 1, UserId = 1, InterviewId = 1, DurationInMinutes = 120, Role = UserRole.Interviewee, InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled });
 
+
         modelBuilder.Entity<Logbook>().HasData(
 
-            new Logbook() { Id = 1, UserId = 1, UserInterviewId = 1, Title = "Logbook from first interview", Content = "Overall Good Interview. Need to improve something.", Time = new TimeOnly(14, 30) });
+            new Logbook() { Id = 1, UserId = 1,Logs = new List<Log>(), Title = "Logbook1" });
 
+        modelBuilder.Entity<Log>().HasData(
+         new Log() { Id = 1, LogbookId = 1, Title = "Log 1", Content = "Learned x and y", InterviewId = 1 },
+         new Log() { Id = 2, LogbookId = 1, Title = "Log 2", Content = "Learned z and i", InterviewId = 1 }
+        );
 
         modelBuilder.Entity<Note>().HasData(
             
@@ -103,6 +114,7 @@ public class DatabaseContext : DbContext
         public DbSet<UserInterview> UserInterviews { get; set; }
         public DbSet<Logbook> Logbooks { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
 
     

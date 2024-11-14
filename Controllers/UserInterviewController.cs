@@ -24,7 +24,7 @@ namespace Interview_Server.Controllers
         [HttpGet("{userId:int}/interviews")]
         public async Task<ActionResult> getAllUserInterviewsNyUserId(int userId)
         {
-            Expression<Func<UserInterview, bool>> predicate = ui => ui.Id == userId;
+            Expression<Func<UserInterview, bool>> predicate = ui => ui.UserId == userId;
             Expression<Func<UserInterview, object>> includeInterview = ui => ui.Interview;
 
             var userInterviews = await _userInterviewRepository.FindAsync(predicate, includeInterview);
@@ -36,7 +36,9 @@ namespace Interview_Server.Controllers
                 description = ui.Interview.Description,
                 duration = ui.DurationInMinutes,
                 time = ui.InterviewTime,
-                notes = ui.Notes
+                notes = ui.Notes,
+                status = InterviewStatus.AwaitingFeedback
+                
             }); 
             return Ok(getInterviewDTOS);
         }
@@ -58,7 +60,9 @@ namespace Interview_Server.Controllers
                 description = interview.Interview.Description,
                 duration = interview.DurationInMinutes,
                 time = interview.InterviewTime,
-                notes = interview.Notes
+                notes = interview.Notes,
+                status = InterviewStatus.AwaitingFeedback
+
             };
 
             return Ok(getInterviewDTO);
@@ -96,8 +100,9 @@ namespace Interview_Server.Controllers
                 Role = UserRole.Interviewee
             };
 
-            // Save the UserInterview object to the database
             _userInterviewRepository.AddAsync(userInterview);
+            
+            
 
             return CreatedAtAction(nameof(getUserInterviewById), new { UserInterviewId = userInterview.Id }, userInterview);
         }

@@ -5,19 +5,11 @@
         public int Id { get; set; }
 
         public int UserId { get; set; }
+        public User User { get; set; }
 
-        public int UserInterviewId { get; set; }
+        public string Title { get; set; }  
 
-        public UserInterview UserInterview { get; set; }
+        public ICollection<Log> Logs { get; set; } = new List<Log>();
 
-        public User User  { get; set; }
-
-        public string Title { get; set; }
-
-        public string Content { get; set; }
-
-        public TimeOnly Time { get; set; }
-
-        
     }
 }
