@@ -145,7 +145,7 @@ namespace Interview_Server.Controllers
             {
                 return NotFound();
             }
-            _UserRepository.deleteAsync(id);
+            await _UserRepository.deleteAsync(id);
             return NoContent();
         }
 
