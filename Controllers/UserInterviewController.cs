@@ -30,6 +30,7 @@ namespace Interview_Server.Controllers
             var userInterviews = await _userInterviewRepository.FindAsync(predicate, includeInterview);
             var getInterviewDTOS = userInterviews.Select(ui => new GetInterviewDTO
             {
+                Id = ui.Id,
                 companyName = ui.Interview.CompanyName,
                 title = ui.Interview.Title,
                 address = ui.Interview.Address,
@@ -54,6 +55,7 @@ namespace Interview_Server.Controllers
             }
             var getInterviewDTO = new GetInterviewDTO
             {
+                Id = interview.Id,
                 companyName = interview.Interview.CompanyName,
                 title = interview.Interview.Title,
                 address = interview.Interview.Address,

@@ -4,6 +4,7 @@ namespace Interview_Server.DTOs
 {
     public class GetInterviewDTO
     {
+        public int Id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public DateTime? time { get; set; }
