@@ -53,7 +53,7 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "Kongens gate 6",
+                            Address = "Kongens gate 6, Oslo",
                             CompanyName = "PayEx",
                             Description = "Technical interview after a short speedinterview",
                             Title = "Technical Interview"
@@ -61,10 +61,26 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 2,
-                            Address = "Idrettsveien 8",
+                            Address = "Idrettsveien 8, Ski",
                             CompanyName = "Nordre Follo Kommune",
                             Description = "Bli kjent intervju",
                             Title = "Førstegangsintervju"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Helsingborgveien 5, Bergen",
+                            CompanyName = "TechCorp Solutions",
+                            Description = "A technical interview for a software engineer position",
+                            Title = "Software Engineer Interview"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Bergen Street 12, Bergen",
+                            CompanyName = "GlobalTech Innovations",
+                            Description = "Interview for the position of data analyst",
+                            Title = "Data Analyst Interview"
                         });
                 });
 
@@ -102,7 +118,7 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            Content = "Learned x and y",
+                            Content = "Learned about interview preparation and key technical questions",
                             InterviewId = 1,
                             LogbookId = 1,
                             Title = "Log 1"
@@ -110,9 +126,57 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 2,
-                            Content = "Learned z and i",
+                            Content = "Studied Python and algorithms for the next interview",
                             InterviewId = 1,
                             LogbookId = 1,
+                            Title = "Log 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "Discovered effective ways to answer behavioral questions",
+                            InterviewId = 3,
+                            LogbookId = 2,
+                            Title = "Log 1"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "Reviewed data analysis tools like Excel, Tableau, and Power BI",
+                            InterviewId = 3,
+                            LogbookId = 2,
+                            Title = "Log 2"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "Prepared for coding tests and problem-solving strategies",
+                            InterviewId = 4,
+                            LogbookId = 3,
+                            Title = "Log 1"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Content = "Analyzed data sets and created data reports",
+                            InterviewId = 4,
+                            LogbookId = 3,
+                            Title = "Log 2"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Content = "Learned SQL database optimization techniques",
+                            InterviewId = 2,
+                            LogbookId = 4,
+                            Title = "Log 1"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Content = "Focused on advanced SQL queries for interviews",
+                            InterviewId = 2,
+                            LogbookId = 4,
                             Title = "Log 2"
                         });
                 });
@@ -143,8 +207,38 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            Title = "Logbook1",
+                            Title = "Ali's Logbook",
                             UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Title = "Muaath's Logbook",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Title = "John's Logbook",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Title = "Magnus's Logbook",
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Title = "Sophia's Logbook",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Title = "David's Logbook",
+                            UserId = 6
                         });
                 });
 
@@ -185,6 +279,38 @@ namespace Interview_Server.Migrations
                             Status = "Reviewed",
                             Title = "Quick note from first interview",
                             UserInterviewId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Content = "Reviewed algorithms and problem-solving questions",
+                            Status = "Reviewed",
+                            Title = "Technical question review",
+                            UserInterviewId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "Need to work on STAR method for behavioral questions",
+                            Status = "NotReviewed",
+                            Title = "Behavioral question notes",
+                            UserInterviewId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "Worked on cleaning data sets for the upcoming interview",
+                            Status = "NotReviewed",
+                            Title = "Data analysis feedback",
+                            UserInterviewId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "Reviewed optimization techniques and SQL queries",
+                            Status = "Reviewed",
+                            Title = "SQL skills review",
+                            UserInterviewId = 4
                         });
                 });
 
@@ -226,7 +352,7 @@ namespace Interview_Server.Migrations
                             Email = "ali@example.com",
                             LogbookId = 1,
                             Mobile = "1234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFo1KCnr/pQWqBIf2f5GblwtDjQp45J89Yqy7MNswcX8ajD2/V8nRBRAYIkD9OM+hQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEADDptPPPl5spwN2AG6tb6pbFYAnl7FMzZomXkGN7/GSnPzVcJEcudxHu+JlrVZWyw==",
                             Username = "Ali Khan"
                         },
                         new
@@ -235,7 +361,7 @@ namespace Interview_Server.Migrations
                             Email = "muaath@example.com",
                             LogbookId = 2,
                             Mobile = "1881",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFmnPKujoYk6f0oRhk7mlcXCWQ+UDZk2yf+SJPkFnigE6KgP1PrXwtcIL3Ct/zaIMg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOzNW8gNOnm98KwZ3X3b23aNBt4onAJQSoFFT/8F1d6RFNXUqej8KdTvnW4XKJ2Bpg==",
                             Username = "Muaath Zerouga"
                         },
                         new
@@ -244,7 +370,7 @@ namespace Interview_Server.Migrations
                             Email = "john@example.com",
                             LogbookId = 3,
                             Mobile = "123",
-                            PasswordHash = "AQAAAAIAAYagAAAAED/Rl6ypOMTEqgi+67Kn+WP4Qb/P5M10S0rKZ3PkCMZHxvaTSEctqvIkiVhWBOjPng==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDT6NNeVR5GNt8Xv+LDnUU30Wo2eNyZlm1egfjsBNefmt4HeLU4UymMuddAjTe5LoQ==",
                             Username = "John Ferdie"
                         },
                         new
@@ -253,8 +379,26 @@ namespace Interview_Server.Migrations
                             Email = "magnus@example.com",
                             LogbookId = 4,
                             Mobile = "786",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI/mWSNIcmjz05Gv1yDpWhqBMglDPafBNLnGWZp7nxapAiTHz36/3cN16OR5ANplGA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBarQP3sSpdCAgyxjqhrsj2ilkfk89TzINMx26o+NvNRt4k7NDbfuAecDHWQCv37+w==",
                             Username = "Magnus Brandsegg"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Email = "sophia@example.com",
+                            LogbookId = 5,
+                            Mobile = "2250",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKqXvqsoUxjq9YIwjlBN+XFEbcA0KWEGgGLQ6wjRIk6uUNzOikrpQdanX/dEB0nieA==",
+                            Username = "Sophia Miller"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Email = "david@example.com",
+                            LogbookId = 6,
+                            Mobile = "4332",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIpSBo40iZU34C0+emVshGPRubQnv+yM86fhASnKNJDTmasrDA2Wm1X22Uj1FRq0SA==",
+                            Username = "David Johnson"
                         });
                 });
 
@@ -304,6 +448,36 @@ namespace Interview_Server.Migrations
                             Role = "Interviewee",
                             Status = "Scheduled",
                             UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DurationInMinutes = 90,
+                            InterviewId = 3,
+                            InterviewTime = new DateTime(2024, 11, 15, 10, 0, 0, 0, DateTimeKind.Utc),
+                            Role = "Interviewee",
+                            Status = "Scheduled",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DurationInMinutes = 60,
+                            InterviewId = 4,
+                            InterviewTime = new DateTime(2024, 11, 16, 11, 15, 0, 0, DateTimeKind.Utc),
+                            Role = "Interviewee",
+                            Status = "Scheduled",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DurationInMinutes = 45,
+                            InterviewId = 2,
+                            InterviewTime = new DateTime(2024, 11, 18, 15, 45, 0, 0, DateTimeKind.Utc),
+                            Role = "Interviewee",
+                            Status = "Scheduled",
+                            UserId = 4
                         });
                 });
 

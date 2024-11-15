@@ -9,8 +9,8 @@ namespace Interview_Server.Repositories
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
 
-        private readonly DatabaseContext _context;
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly DatabaseContext _context;
+        protected readonly DbSet<TEntity> _dbSet;
 
         public Repository(DatabaseContext context)
         {

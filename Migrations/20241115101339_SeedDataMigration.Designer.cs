@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241113105649_addedDuration")]
-    partial class addedDuration
+    [Migration("20241115101339_SeedDataMigration")]
+    partial class SeedDataMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,7 +56,7 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "Kongens gate 6",
+                            Address = "Kongens gate 6, Oslo",
                             CompanyName = "PayEx",
                             Description = "Technical interview after a short speedinterview",
                             Title = "Technical Interview"
@@ -64,14 +64,30 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 2,
-                            Address = "Idrettsveien 8",
+                            Address = "Idrettsveien 8, Ski",
                             CompanyName = "Nordre Follo Kommune",
                             Description = "Bli kjent intervju",
                             Title = "Førstegangsintervju"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Helsingborgveien 5, Bergen",
+                            CompanyName = "TechCorp Solutions",
+                            Description = "A technical interview for a software engineer position",
+                            Title = "Software Engineer Interview"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Bergen Street 12, Bergen",
+                            CompanyName = "GlobalTech Innovations",
+                            Description = "Interview for the position of data analyst",
+                            Title = "Data Analyst Interview"
                         });
                 });
 
-            modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
+            modelBuilder.Entity("Interview_Server.Models.Log", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,8 +99,98 @@ namespace Interview_Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<TimeOnly>("Time")
-                        .HasColumnType("time without time zone");
+                    b.Property<int>("InterviewId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LogbookId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InterviewId");
+
+                    b.HasIndex("LogbookId");
+
+                    b.ToTable("Logs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Content = "Learned about interview preparation and key technical questions",
+                            InterviewId = 1,
+                            LogbookId = 1,
+                            Title = "Log 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Content = "Studied Python and algorithms for the next interview",
+                            InterviewId = 1,
+                            LogbookId = 1,
+                            Title = "Log 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "Discovered effective ways to answer behavioral questions",
+                            InterviewId = 3,
+                            LogbookId = 2,
+                            Title = "Log 1"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "Reviewed data analysis tools like Excel, Tableau, and Power BI",
+                            InterviewId = 3,
+                            LogbookId = 2,
+                            Title = "Log 2"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "Prepared for coding tests and problem-solving strategies",
+                            InterviewId = 4,
+                            LogbookId = 3,
+                            Title = "Log 1"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Content = "Analyzed data sets and created data reports",
+                            InterviewId = 4,
+                            LogbookId = 3,
+                            Title = "Log 2"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Content = "Learned SQL database optimization techniques",
+                            InterviewId = 2,
+                            LogbookId = 4,
+                            Title = "Log 1"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Content = "Focused on advanced SQL queries for interviews",
+                            InterviewId = 2,
+                            LogbookId = 4,
+                            Title = "Log 2"
+                        });
+                });
+
+            modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -93,15 +199,10 @@ namespace Interview_Server.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserInterviewId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique();
-
-                    b.HasIndex("UserInterviewId");
 
                     b.ToTable("Logbooks");
 
@@ -109,11 +210,38 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            Content = "Overall Good Interview. Need to improve something.",
-                            Time = new TimeOnly(14, 30, 0),
-                            Title = "Logbook from first interview",
-                            UserId = 1,
-                            UserInterviewId = 1
+                            Title = "Ali's Logbook",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Title = "Muaath's Logbook",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Title = "John's Logbook",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Title = "Magnus's Logbook",
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Title = "Sophia's Logbook",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Title = "David's Logbook",
+                            UserId = 6
                         });
                 });
 
@@ -154,6 +282,38 @@ namespace Interview_Server.Migrations
                             Status = "Reviewed",
                             Title = "Quick note from first interview",
                             UserInterviewId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Content = "Reviewed algorithms and problem-solving questions",
+                            Status = "Reviewed",
+                            Title = "Technical question review",
+                            UserInterviewId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "Need to work on STAR method for behavioral questions",
+                            Status = "NotReviewed",
+                            Title = "Behavioral question notes",
+                            UserInterviewId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "Worked on cleaning data sets for the upcoming interview",
+                            Status = "NotReviewed",
+                            Title = "Data analysis feedback",
+                            UserInterviewId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "Reviewed optimization techniques and SQL queries",
+                            Status = "Reviewed",
+                            Title = "SQL skills review",
+                            UserInterviewId = 4
                         });
                 });
 
@@ -195,7 +355,7 @@ namespace Interview_Server.Migrations
                             Email = "ali@example.com",
                             LogbookId = 1,
                             Mobile = "1234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMUxNL4P/WnD0wWJMUPFjf6zlUmhQ0Ay9D5XIPlxDp1zSu3Pd8IG8xJyIC8law3Piw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEADDptPPPl5spwN2AG6tb6pbFYAnl7FMzZomXkGN7/GSnPzVcJEcudxHu+JlrVZWyw==",
                             Username = "Ali Khan"
                         },
                         new
@@ -204,7 +364,7 @@ namespace Interview_Server.Migrations
                             Email = "muaath@example.com",
                             LogbookId = 2,
                             Mobile = "1881",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOJUesdY6WENCJ1kByVPhHUZbu7Y+4Ez1urqTY7yRD4kKUXq0eD88GWSGq5HgnFyvg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOzNW8gNOnm98KwZ3X3b23aNBt4onAJQSoFFT/8F1d6RFNXUqej8KdTvnW4XKJ2Bpg==",
                             Username = "Muaath Zerouga"
                         },
                         new
@@ -213,7 +373,7 @@ namespace Interview_Server.Migrations
                             Email = "john@example.com",
                             LogbookId = 3,
                             Mobile = "123",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAO255Ct7sJVKG/wke49idyOVhnbtOn36ZiyAz5QUrg9sAtR7RVD1nxkA/F6z3q7Cg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDT6NNeVR5GNt8Xv+LDnUU30Wo2eNyZlm1egfjsBNefmt4HeLU4UymMuddAjTe5LoQ==",
                             Username = "John Ferdie"
                         },
                         new
@@ -222,8 +382,26 @@ namespace Interview_Server.Migrations
                             Email = "magnus@example.com",
                             LogbookId = 4,
                             Mobile = "786",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK3wCpvYlrr6u1GOJC7jTexsvUi3CHi1pAXBfGhnzRrEntyJ0jPB83xtt54wWoHy6w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBarQP3sSpdCAgyxjqhrsj2ilkfk89TzINMx26o+NvNRt4k7NDbfuAecDHWQCv37+w==",
                             Username = "Magnus Brandsegg"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Email = "sophia@example.com",
+                            LogbookId = 5,
+                            Mobile = "2250",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKqXvqsoUxjq9YIwjlBN+XFEbcA0KWEGgGLQ6wjRIk6uUNzOikrpQdanX/dEB0nieA==",
+                            Username = "Sophia Miller"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Email = "david@example.com",
+                            LogbookId = 6,
+                            Mobile = "4332",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIpSBo40iZU34C0+emVshGPRubQnv+yM86fhASnKNJDTmasrDA2Wm1X22Uj1FRq0SA==",
+                            Username = "David Johnson"
                         });
                 });
 
@@ -273,7 +451,56 @@ namespace Interview_Server.Migrations
                             Role = "Interviewee",
                             Status = "Scheduled",
                             UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DurationInMinutes = 90,
+                            InterviewId = 3,
+                            InterviewTime = new DateTime(2024, 11, 15, 10, 0, 0, 0, DateTimeKind.Utc),
+                            Role = "Interviewee",
+                            Status = "Scheduled",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DurationInMinutes = 60,
+                            InterviewId = 4,
+                            InterviewTime = new DateTime(2024, 11, 16, 11, 15, 0, 0, DateTimeKind.Utc),
+                            Role = "Interviewee",
+                            Status = "Scheduled",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DurationInMinutes = 45,
+                            InterviewId = 2,
+                            InterviewTime = new DateTime(2024, 11, 18, 15, 45, 0, 0, DateTimeKind.Utc),
+                            Role = "Interviewee",
+                            Status = "Scheduled",
+                            UserId = 4
                         });
+                });
+
+            modelBuilder.Entity("Interview_Server.Models.Log", b =>
+                {
+                    b.HasOne("Interview_Server.Models.Interview", "Interview")
+                        .WithMany()
+                        .HasForeignKey("InterviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Interview_Server.Models.Logbook", "Logbook")
+                        .WithMany("Logs")
+                        .HasForeignKey("LogbookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Interview");
+
+                    b.Navigation("Logbook");
                 });
 
             modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
@@ -284,15 +511,7 @@ namespace Interview_Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UserInterview", "UserInterview")
-                        .WithMany()
-                        .HasForeignKey("UserInterviewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("User");
-
-                    b.Navigation("UserInterview");
                 });
 
             modelBuilder.Entity("Interview_Server.Models.Note", b =>
@@ -328,6 +547,11 @@ namespace Interview_Server.Migrations
             modelBuilder.Entity("Interview_Server.Models.Interview", b =>
                 {
                     b.Navigation("UserInterviews");
+                });
+
+            modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
+                {
+                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("Interview_Server.Models.User", b =>
