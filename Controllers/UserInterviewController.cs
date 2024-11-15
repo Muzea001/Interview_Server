@@ -14,11 +14,13 @@ namespace Interview_Server.Controllers
         private readonly IRepository<UserInterview> _userInterviewRepository;
         private readonly IRepository<User> _UserRepository;
         private readonly IRepository<Interview> _InterviewRepository;
-        public UserInterviewController(IRepository<UserInterview> userInterviewRepository, IRepository<User> userRepository, IRepository<Interview> interviewRepository)
+        private readonly IUserInterview _userInterview;
+        public UserInterviewController(IRepository<UserInterview> userInterviewRepository,IUserInterview userInterivew, IRepository<User> userRepository, IRepository<Interview> interviewRepository)
         {
             _userInterviewRepository = userInterviewRepository;
             _UserRepository = userRepository;
             _InterviewRepository = interviewRepository;
+            _userInterview = userInterivew;
         }
 
         [HttpGet("{userId:int}/interviews")]
@@ -42,6 +44,35 @@ namespace Interview_Server.Controllers
                 
             }); 
             return Ok(getInterviewDTOS);
+        }
+
+        [HttpGet("Search")]
+        public async Task<ActionResult> SearchUserInterviews([FromQuery] string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return BadRequest("Search term cannot be empty");
+            }
+            Expression<Func<UserInterview, object>> includeInterview = ui => ui.Interview;
+            var results = await _userInterview.SearchUserInterviewsAsync(searchTerm, includeInterview);
+            if (!results.Any())
+            {
+                return NotFound("No matches found.");
+            }
+            var resultDTOs = results.Select(interview => new GetInterviewDTO
+            {
+                Id = interview.Id,
+                companyName = interview.Interview.CompanyName,
+                title = interview.Interview.Title,
+                address = interview.Interview.Address,
+                description = interview.Interview.Description,
+                duration = interview.DurationInMinutes,
+                time = interview.InterviewTime,
+                notes = interview.Notes,
+                status = interview.Status
+            }).ToList();
+
+            return Ok(resultDTOs);
         }
 
         [HttpGet("{UserInterviewId}")]
@@ -108,6 +139,23 @@ namespace Interview_Server.Controllers
             
 
             return CreatedAtAction(nameof(getUserInterviewById), new { UserInterviewId = userInterview.Id }, userInterview);
+        }
+
+        [HttpPut("changeStatus/{UserInterviewId}")]
+        public async Task<ActionResult> updateInterviewStatus(int UserInterviewId, [FromBody] string newStatus)
+        {
+            if (!Enum.TryParse(typeof(InterviewStatus), newStatus, true, out var parsedStatus))
+            {
+                return BadRequest("Invalid status");
+            }
+
+            var userInterview = await _userInterviewRepository.GetByIdAsync(UserInterviewId); 
+            if (userInterview == null)
+            {
+                return NotFound("UserInterview not found");
+            }
+            await _userInterview.ChangeStatusAsync(UserInterviewId, (InterviewStatus)parsedStatus);
+            return Ok(userInterview);
         }
 
 
