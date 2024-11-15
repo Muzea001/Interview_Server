@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241113095457_initialCreate")]
+    partial class initialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,7 +71,7 @@ namespace Interview_Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Interview_Server.Models.Log", b =>
+            modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,50 +83,8 @@ namespace Interview_Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("InterviewId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LogbookId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InterviewId");
-
-                    b.HasIndex("LogbookId");
-
-                    b.ToTable("Logs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "Learned x and y",
-                            InterviewId = 1,
-                            LogbookId = 1,
-                            Title = "Log 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Content = "Learned z and i",
-                            InterviewId = 1,
-                            LogbookId = 1,
-                            Title = "Log 2"
-                        });
-                });
-
-            modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<TimeOnly>("Time")
+                        .HasColumnType("time without time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -132,10 +93,15 @@ namespace Interview_Server.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("UserInterviewId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique();
+
+                    b.HasIndex("UserInterviewId");
 
                     b.ToTable("Logbooks");
 
@@ -143,8 +109,11 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            Title = "Logbook1",
-                            UserId = 1
+                            Content = "Overall Good Interview. Need to improve something.",
+                            Time = new TimeOnly(14, 30, 0),
+                            Title = "Logbook from first interview",
+                            UserId = 1,
+                            UserInterviewId = 1
                         });
                 });
 
@@ -226,7 +195,7 @@ namespace Interview_Server.Migrations
                             Email = "ali@example.com",
                             LogbookId = 1,
                             Mobile = "1234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFo1KCnr/pQWqBIf2f5GblwtDjQp45J89Yqy7MNswcX8ajD2/V8nRBRAYIkD9OM+hQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPSc4wNR4girynWl18H6d77IS8t+ATyGgAJlVyKSIlObLMCzWSx+n5AZKgzRrZpzdA==",
                             Username = "Ali Khan"
                         },
                         new
@@ -235,7 +204,7 @@ namespace Interview_Server.Migrations
                             Email = "muaath@example.com",
                             LogbookId = 2,
                             Mobile = "1881",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFmnPKujoYk6f0oRhk7mlcXCWQ+UDZk2yf+SJPkFnigE6KgP1PrXwtcIL3Ct/zaIMg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPp9YbwMQYFPyzcKkvrw/CRFNw/fDCod5RdkWwCW12jdoB8qpxN7nmI4azGdqZuQqg==",
                             Username = "Muaath Zerouga"
                         },
                         new
@@ -244,7 +213,7 @@ namespace Interview_Server.Migrations
                             Email = "john@example.com",
                             LogbookId = 3,
                             Mobile = "123",
-                            PasswordHash = "AQAAAAIAAYagAAAAED/Rl6ypOMTEqgi+67Kn+WP4Qb/P5M10S0rKZ3PkCMZHxvaTSEctqvIkiVhWBOjPng==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECzQ/woUf17bR78lZo0HF7IGuQEyxzU3qz6btPG9GIwHQ1MCNQg7uRWMQaH8VJt6bw==",
                             Username = "John Ferdie"
                         },
                         new
@@ -253,7 +222,7 @@ namespace Interview_Server.Migrations
                             Email = "magnus@example.com",
                             LogbookId = 4,
                             Mobile = "786",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI/mWSNIcmjz05Gv1yDpWhqBMglDPafBNLnGWZp7nxapAiTHz36/3cN16OR5ANplGA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAkbEc79745+Jx3blcDpzUNHV/CjSNVc41eKazaW1uBRDK7B1G1x6brxJuWT37G6vw==",
                             Username = "Magnus Brandsegg"
                         });
                 });
@@ -265,9 +234,6 @@ namespace Interview_Server.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DurationInMinutes")
-                        .HasColumnType("integer");
 
                     b.Property<int>("InterviewId")
                         .HasColumnType("integer");
@@ -298,32 +264,12 @@ namespace Interview_Server.Migrations
                         new
                         {
                             Id = 1,
-                            DurationInMinutes = 120,
                             InterviewId = 1,
                             InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc),
                             Role = "Interviewee",
                             Status = "Scheduled",
                             UserId = 1
                         });
-                });
-
-            modelBuilder.Entity("Interview_Server.Models.Log", b =>
-                {
-                    b.HasOne("Interview_Server.Models.Interview", "Interview")
-                        .WithMany()
-                        .HasForeignKey("InterviewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Interview_Server.Models.Logbook", "Logbook")
-                        .WithMany("Logs")
-                        .HasForeignKey("LogbookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Interview");
-
-                    b.Navigation("Logbook");
                 });
 
             modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
@@ -334,7 +280,15 @@ namespace Interview_Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UserInterview", "UserInterview")
+                        .WithMany()
+                        .HasForeignKey("UserInterviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("User");
+
+                    b.Navigation("UserInterview");
                 });
 
             modelBuilder.Entity("Interview_Server.Models.Note", b =>
@@ -370,11 +324,6 @@ namespace Interview_Server.Migrations
             modelBuilder.Entity("Interview_Server.Models.Interview", b =>
                 {
                     b.Navigation("UserInterviews");
-                });
-
-            modelBuilder.Entity("Interview_Server.Models.Logbook", b =>
-                {
-                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("Interview_Server.Models.User", b =>

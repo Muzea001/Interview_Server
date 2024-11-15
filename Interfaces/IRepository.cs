@@ -9,7 +9,7 @@ namespace Interview_Server.Interfaces
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> EditAsync(TEntity entity);
-        void deleteAsync(int id);
+        Task<TEntity> deleteAsync(int id);
         
 
         

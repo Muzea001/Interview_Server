@@ -1,4 +1,6 @@
 ﻿using Interview_Server.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -22,7 +24,7 @@ namespace Interview_Server.Repositories
             return entity;
         }
 
-        public async void deleteAsync(int id)
+        public async Task<TEntity> deleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity == null)
@@ -30,7 +32,8 @@ namespace Interview_Server.Repositories
                 throw new Exception("Entity not found");
             }
             _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
+            return entity;
             }
 
         public async Task<TEntity> EditAsync(TEntity entity)
@@ -69,7 +72,14 @@ namespace Interview_Server.Repositories
                 query = query.Include(includeProperty);
             }
 
-            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+            var idProperty = typeof(TEntity).GetProperty("Id"); 
+            if (idProperty == null)
+            {
+                throw new InvalidOperationException("Entity does not have an Id property.");
+            }
+
+            var entity = await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+            return entity;
         }
 
         

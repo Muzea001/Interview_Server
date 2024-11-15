@@ -39,13 +39,13 @@ namespace Interview_Server.Controllers
         public async Task<ActionResult<User>> CreateUser(User user)
         {
             await _UserRepository.AddAsync(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<User>> EditUser(int id, User user)
         {
-            if (id != user.UserId)
+            if (id != user.Id)
             {
                 return BadRequest("UserId must match");
             }
