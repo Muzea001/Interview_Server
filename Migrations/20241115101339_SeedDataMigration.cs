@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Interview_Server.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class SeedDataMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,26 @@ namespace Interview_Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Logbooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logbooks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Logbooks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserInterviews",
                 columns: table => new
                 {
@@ -57,6 +77,7 @@ namespace Interview_Server.Migrations
                     InterviewId = table.Column<int>(type: "integer", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: false),
                     InterviewTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DurationInMinutes = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -77,30 +98,29 @@ namespace Interview_Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Logbooks",
+                name: "Logs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    UserInterviewId = table.Column<int>(type: "integer", nullable: false),
+                    LogbookId = table.Column<int>(type: "integer", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Time = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
+                    InterviewId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logbooks", x => x.Id);
+                    table.PrimaryKey("PK_Logs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Logbooks_UserInterviews_UserInterviewId",
-                        column: x => x.UserInterviewId,
-                        principalTable: "UserInterviews",
+                        name: "FK_Logs_Interviews_InterviewId",
+                        column: x => x.InterviewId,
+                        principalTable: "Interviews",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Logbooks_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Logs_Logbooks_LogbookId",
+                        column: x => x.LogbookId,
+                        principalTable: "Logbooks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -132,8 +152,10 @@ namespace Interview_Server.Migrations
                 columns: new[] { "Id", "Address", "CompanyName", "Description", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Kongens gate 6", "PayEx", "Technical interview after a short speedinterview", "Technical Interview" },
-                    { 2, "Idrettsveien 8", "Nordre Follo Kommune", "Bli kjent intervju", "Førstegangsintervju" }
+                    { 1, "Kongens gate 6, Oslo", "PayEx", "Technical interview after a short speedinterview", "Technical Interview" },
+                    { 2, "Idrettsveien 8, Ski", "Nordre Follo Kommune", "Bli kjent intervju", "Førstegangsintervju" },
+                    { 3, "Helsingborgveien 5, Bergen", "TechCorp Solutions", "A technical interview for a software engineer position", "Software Engineer Interview" },
+                    { 4, "Bergen Street 12, Bergen", "GlobalTech Innovations", "Interview for the position of data analyst", "Data Analyst Interview" }
                 });
 
             migrationBuilder.InsertData(
@@ -141,26 +163,64 @@ namespace Interview_Server.Migrations
                 columns: new[] { "Id", "Email", "LogbookId", "Mobile", "PasswordHash", "Username" },
                 values: new object[,]
                 {
-                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEPSc4wNR4girynWl18H6d77IS8t+ATyGgAJlVyKSIlObLMCzWSx+n5AZKgzRrZpzdA==", "Ali Khan" },
-                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEPp9YbwMQYFPyzcKkvrw/CRFNw/fDCod5RdkWwCW12jdoB8qpxN7nmI4azGdqZuQqg==", "Muaath Zerouga" },
-                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAECzQ/woUf17bR78lZo0HF7IGuQEyxzU3qz6btPG9GIwHQ1MCNQg7uRWMQaH8VJt6bw==", "John Ferdie" },
-                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEAkbEc79745+Jx3blcDpzUNHV/CjSNVc41eKazaW1uBRDK7B1G1x6brxJuWT37G6vw==", "Magnus Brandsegg" }
+                    { 1, "ali@example.com", 1, "1234", "AQAAAAIAAYagAAAAEADDptPPPl5spwN2AG6tb6pbFYAnl7FMzZomXkGN7/GSnPzVcJEcudxHu+JlrVZWyw==", "Ali Khan" },
+                    { 2, "muaath@example.com", 2, "1881", "AQAAAAIAAYagAAAAEOzNW8gNOnm98KwZ3X3b23aNBt4onAJQSoFFT/8F1d6RFNXUqej8KdTvnW4XKJ2Bpg==", "Muaath Zerouga" },
+                    { 3, "john@example.com", 3, "123", "AQAAAAIAAYagAAAAEDT6NNeVR5GNt8Xv+LDnUU30Wo2eNyZlm1egfjsBNefmt4HeLU4UymMuddAjTe5LoQ==", "John Ferdie" },
+                    { 4, "magnus@example.com", 4, "786", "AQAAAAIAAYagAAAAEBarQP3sSpdCAgyxjqhrsj2ilkfk89TzINMx26o+NvNRt4k7NDbfuAecDHWQCv37+w==", "Magnus Brandsegg" },
+                    { 5, "sophia@example.com", 5, "2250", "AQAAAAIAAYagAAAAEKqXvqsoUxjq9YIwjlBN+XFEbcA0KWEGgGLQ6wjRIk6uUNzOikrpQdanX/dEB0nieA==", "Sophia Miller" },
+                    { 6, "david@example.com", 6, "4332", "AQAAAAIAAYagAAAAEIpSBo40iZU34C0+emVshGPRubQnv+yM86fhASnKNJDTmasrDA2Wm1X22Uj1FRq0SA==", "David Johnson" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Logbooks",
+                columns: new[] { "Id", "Title", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "Ali's Logbook", 1 },
+                    { 2, "Muaath's Logbook", 2 },
+                    { 3, "John's Logbook", 3 },
+                    { 4, "Magnus's Logbook", 4 },
+                    { 5, "Sophia's Logbook", 5 },
+                    { 6, "David's Logbook", 6 }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserInterviews",
-                columns: new[] { "Id", "InterviewId", "InterviewTime", "Role", "Status", "UserId" },
-                values: new object[] { 1, 1, new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 1 });
+                columns: new[] { "Id", "DurationInMinutes", "InterviewId", "InterviewTime", "Role", "Status", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 120, 1, new DateTime(2024, 11, 11, 14, 30, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 1 },
+                    { 2, 90, 3, new DateTime(2024, 11, 15, 10, 0, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 2 },
+                    { 3, 60, 4, new DateTime(2024, 11, 16, 11, 15, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 3 },
+                    { 4, 45, 2, new DateTime(2024, 11, 18, 15, 45, 0, 0, DateTimeKind.Utc), "Interviewee", "Scheduled", 4 }
+                });
 
             migrationBuilder.InsertData(
-                table: "Logbooks",
-                columns: new[] { "Id", "Content", "Time", "Title", "UserId", "UserInterviewId" },
-                values: new object[] { 1, "Overall Good Interview. Need to improve something.", new TimeOnly(14, 30, 0), "Logbook from first interview", 1, 1 });
+                table: "Logs",
+                columns: new[] { "Id", "Content", "InterviewId", "LogbookId", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Learned about interview preparation and key technical questions", 1, 1, "Log 1" },
+                    { 2, "Studied Python and algorithms for the next interview", 1, 1, "Log 2" },
+                    { 3, "Discovered effective ways to answer behavioral questions", 3, 2, "Log 1" },
+                    { 4, "Reviewed data analysis tools like Excel, Tableau, and Power BI", 3, 2, "Log 2" },
+                    { 5, "Prepared for coding tests and problem-solving strategies", 4, 3, "Log 1" },
+                    { 6, "Analyzed data sets and created data reports", 4, 3, "Log 2" },
+                    { 7, "Learned SQL database optimization techniques", 2, 4, "Log 1" },
+                    { 8, "Focused on advanced SQL queries for interviews", 2, 4, "Log 2" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Notes",
                 columns: new[] { "Id", "Content", "Status", "Title", "UserInterviewId" },
-                values: new object[] { 1, "Need to smile more on interviews", "Reviewed", "Quick note from first interview", 1 });
+                values: new object[,]
+                {
+                    { 1, "Need to smile more on interviews", "Reviewed", "Quick note from first interview", 1 },
+                    { 2, "Reviewed algorithms and problem-solving questions", "Reviewed", "Technical question review", 2 },
+                    { 3, "Need to work on STAR method for behavioral questions", "NotReviewed", "Behavioral question notes", 3 },
+                    { 4, "Worked on cleaning data sets for the upcoming interview", "NotReviewed", "Data analysis feedback", 4 },
+                    { 5, "Reviewed optimization techniques and SQL queries", "Reviewed", "SQL skills review", 4 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logbooks_UserId",
@@ -169,9 +229,14 @@ namespace Interview_Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Logbooks_UserInterviewId",
-                table: "Logbooks",
-                column: "UserInterviewId");
+                name: "IX_Logs_InterviewId",
+                table: "Logs",
+                column: "InterviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_LogbookId",
+                table: "Logs",
+                column: "LogbookId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notes_UserInterviewId",
@@ -193,10 +258,13 @@ namespace Interview_Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Logbooks");
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Notes");
+
+            migrationBuilder.DropTable(
+                name: "Logbooks");
 
             migrationBuilder.DropTable(
                 name: "UserInterviews");
