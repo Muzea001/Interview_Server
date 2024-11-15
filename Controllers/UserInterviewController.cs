@@ -98,11 +98,12 @@ namespace Interview_Server.Controllers
                 Interview = newInterview,
                 InterviewId = newInterview.Id,
                 InterviewTime = interview.time.Value,
+                DurationInMinutes = interview.duration,
                 Notes = new List<Note>(),
                 Role = UserRole.Interviewee
             };
 
-            _userInterviewRepository.AddAsync(userInterview);
+            await _userInterviewRepository.AddAsync(userInterview);
             
             
 
@@ -145,7 +146,7 @@ namespace Interview_Server.Controllers
             {
                 return NotFound();
             }
-            await _UserRepository.deleteAsync(id);
+            await _userInterviewRepository.deleteAsync(id);
             return NoContent();
         }
 
