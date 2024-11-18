@@ -11,10 +11,10 @@ namespace Interview_Server.Controllers
     public class NoteController : ControllerBase
     {
 
-        private readonly IRepository<Note> _noteRepository;
         private readonly IRepository<UserInterview> _userInterviewRepository;
+        private readonly INote _noteRepository;
 
-        public NoteController(IRepository<Note> noteRepository, IRepository<UserInterview> userInterviewRepository)
+        public NoteController(INote noteRepository, IRepository<UserInterview> userInterviewRepository)
         {
             _noteRepository = noteRepository;
             _userInterviewRepository = userInterviewRepository;
@@ -114,6 +114,36 @@ namespace Interview_Server.Controllers
             }
         }
 
+        [HttpPut("changeStatus/{noteId}")]
+
+        public async Task<ActionResult> ChangeNoteStatus(int noteId, [FromBody] string newStatus)
+        {
+            try
+            {
+                if (!Enum.TryParse(typeof(NoteStatus), newStatus, true, out var parsedStatus))
+                {
+                    return BadRequest("Invalid status");
+                }
+                var note = await _noteRepository.GetByIdAsync(noteId);
+                if (note == null)
+                {
+                    return NotFound("Note not found");
+                }
+                await _noteRepository.ChangeStatusAsync(noteId, (NoteStatus)parsedStatus);
+                return Ok(new
+                {
+                    message = "Note status updated successfully",
+                    noteId = noteId,
+                    newStatus = parsedStatus
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
         [HttpDelete("{noteId}")]
         public async Task<ActionResult> deleteNote(int noteId)
         {
@@ -124,7 +154,7 @@ namespace Interview_Server.Controllers
                 {
                     return NotFound("Note not found");
                 }
-                 _noteRepository.deleteAsync(noteId);
+                 await _noteRepository.deleteAsync(noteId);
                 return NoContent();
             }
             catch (Exception e)
