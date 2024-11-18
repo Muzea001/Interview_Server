@@ -464,3 +464,4 @@ $RECYCLE.BIN/
 # Ignore specific environment config files
 appsettings.Development.json
 appsettings.json
+ 

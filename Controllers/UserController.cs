@@ -4,6 +4,12 @@ using System.Threading.Tasks;
 using Interview_Server.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Interview_Server.DTOs;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
+using Interview_Server.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 namespace Interview_Server.Controllers
 {
@@ -11,11 +17,67 @@ namespace Interview_Server.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly AuthService _authService;
         private readonly IRepository<User> _UserRepository;
-        public UserController(IRepository<User> repository)
+        private readonly DatabaseContext _context;
+        public UserController(IRepository<User> repository, DatabaseContext context, AuthService service)
         {
             _UserRepository = repository;
+            _context = context;
+            _authService = service;
         }
+
+        [HttpPost("Register")]
+        public async Task<ActionResult> Register(RegisterDTO dto)
+        {
+            if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
+            {
+                return BadRequest("User with these credentials already exists");
+            }
+
+            // Create a random salt for the user
+            using var rng = new RNGCryptoServiceProvider();
+            byte[] salt = new byte[16];  // Salt of 16 bytes
+            rng.GetBytes(salt);
+
+            var passwordHasher = new PasswordHasher<User>();
+
+
+            var user = new User
+            {
+                Username = dto.Username,
+                Email = dto.Email,
+                PasswordHash = passwordHasher.HashPassword(null, dto.Password),
+                Mobile = dto.Mobile
+            };
+
+            await _UserRepository.AddAsync(user);
+            return Ok("User Registered Successfully");
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
+            if (user == null)
+            {
+                return Unauthorized("Invalid Username");
+            }
+
+            var passwordHasher = new PasswordHasher<User>();
+            var verificationResult = passwordHasher.VerifyHashedPassword(null, user.PasswordHash, dto.Password);
+
+            if (verificationResult == PasswordVerificationResult.Failed)
+            {
+                return Unauthorized("Invalid Password");
+            }
+
+            var token = _authService.GenerateToken(user);
+           
+            return Ok(new { Token = token });
+
+        }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
@@ -62,7 +124,7 @@ namespace Interview_Server.Controllers
             {
                 return NotFound();
             }
-             _UserRepository.deleteAsync(id);
+             await _UserRepository.deleteAsync(id);
             return NoContent();
         }
 

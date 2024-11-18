@@ -76,6 +76,7 @@ namespace Interview_Server.Controllers
             return Ok(resultDTOs);
         }
 
+        
         [HttpGet("{UserInterviewId}")]
         public async Task<ActionResult> getUserInterviewById(int UserInterviewId)
         {
