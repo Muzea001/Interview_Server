@@ -11,8 +11,5 @@ namespace Interview_Server.Interfaces
         Task<TEntity> EditAsync(TEntity entity);
         Task<TEntity> deleteAsync(int id);
         
-
-        
-
     }
 }

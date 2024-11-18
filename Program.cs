@@ -17,6 +17,7 @@ builder.Services.AddControllers()
     });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserInterview, UserInterviewRepository>();
+builder.Services.AddScoped<INote, NoteRepository>();
 builder.Services.AddDbContext<DatabaseContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).LogTo
   (Console.WriteLine, LogLevel.Information));
