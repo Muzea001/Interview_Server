@@ -29,7 +29,8 @@ namespace Interview_Server.Controllers
             Expression<Func<UserInterview, bool>> predicate = ui => ui.UserId == userId;
             Expression<Func<UserInterview, object>> includeInterview = ui => ui.Interview;
 
-            var userInterviews = await _userInterviewRepository.FindAsync(predicate, includeInterview);
+            var userInterviews = await _userInterviewRepository
+            .FindAsync(ui => ui.UserId == userId, includeInterview);
             var getInterviewDTOS = userInterviews.Select(ui => new GetInterviewDTO
             {
                 Id = ui.Id,
@@ -117,6 +118,7 @@ namespace Interview_Server.Controllers
                 Address = interview.address,
                 CompanyName = interview.companyName,
                 UserInterviews = new List<UserInterview>()
+                
             };
 
             await _InterviewRepository.AddAsync(newInterview);

@@ -18,8 +18,8 @@ public class UserInterviewRepository : Repository<UserInterview>, IUserInterview
             throw new KeyNotFoundException($"UserInterview with ID {userInterviewId} not found.");
         }
         userInterview.Status = newStatus;
+        await _context.Entry(userInterview).ReloadAsync();
 
-        _dbSet.Update(userInterview);
         await _context.SaveChangesAsync();
     }
 
