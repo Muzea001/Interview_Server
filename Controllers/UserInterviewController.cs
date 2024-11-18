@@ -176,6 +176,10 @@ namespace Interview_Server.Controllers
             {
                 return NotFound("User not found");
             }
+            if (userInterview.Interview == null)
+            {
+                userInterview.Interview = new Interview();
+            }
 
             userInterview.Interview.Title = interview.title ?? userInterview.Interview.Title;  
             userInterview.Interview.Description = interview.description ?? userInterview.Interview.Description;
