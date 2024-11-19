@@ -38,6 +38,7 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
+    c.SchemaGeneratorOptions.SchemaIdSelector = (type) => type.FullName;
 });
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
