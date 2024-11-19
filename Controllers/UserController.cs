@@ -18,21 +18,21 @@ namespace Interview_Server.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly IEmailService _emailService;
         private readonly AuthService _authService;
         private readonly AuthValidationService _validationService;
         private readonly IImageService _imageService;
         private readonly IRepository<User> _UserRepository;
         private readonly DatabaseContext _context;
-        
-        public UserController(IRepository<User> repository, DatabaseContext context, AuthService service, AuthValidationService validationService, IImageService service1)
+        public UserController(IRepository<User> repository, DatabaseContext context, AuthService service, IImageService service1, IEmailService emailService)
         {
             _UserRepository = repository;
             _context = context;
             _authService = service;
             _validationService = validationService;
             _imageService = service1;
+            _emailService = emailService;
         }
-
         [HttpPost("Register")]
         
         public async Task<ActionResult> Register(RegisterDTO dto, [FromForm] IFormFile profileImage)
@@ -63,47 +63,43 @@ namespace Interview_Server.Controllers
 
                 if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
             {
-                errors.Add("User with these credentials already exists");
+                return NotFound("User with this email not found");
             }
 
-            if ((errors.Any())){
-               return BadRequest(new { Errors = errors } );
-            }
+            var resetToken = Guid.NewGuid().ToString();
 
-            
+            user.ResetToken = resetToken;
+            user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15); 
+            await _context.SaveChangesAsync();
 
-            var passwordHasher = new PasswordHasher<User>();
-            byte[] imageBytes = null;
-            if(profileImage!= null)
-            {
-                try
-                {
-                    imageBytes = await _imageService.ProcessImageAsync(profileImage);
-                }
-                catch(ArgumentException e)
-                {
-                    return BadRequest(e.Message);
-                }
-            }
-            var user = new User
-            {   
-                Username = dto.Username,
-                Email = dto.Email,
-                PasswordHash = passwordHasher.HashPassword(null, dto.Password),
-                Mobile = dto.Mobile,
-                ProfileImage = imageBytes
-                
-            };
+            await _emailService.SendEmailAsync(user.Email, "Password Reset Request",
+                $"Your password reset code is: {resetToken}");
 
-            await _UserRepository.AddAsync(user);
-            return Ok("User Registered Successfully");
+            return Ok("A password reset code has been sent to your email.");
         }
 
-    
-
-        
         [HttpPost("resetPassword")]
-       public async Task<ActionResult> ForgotPassword(int id,[FromBody] ResetPasswordDTO dto)
+        public async Task<ActionResult> ResetPassword(ResetPasswordDTO dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.ResetToken == dto.ResetToken);
+            if (user == null || user.ResetTokenExpiry < DateTime.UtcNow)
+            {
+                return BadRequest("Invalid or expired reset token.");
+            }
+
+            var passwordHasher = new PasswordHasher<User>();
+            user.PasswordHash = passwordHasher.HashPassword(user, dto.NewPassword);
+
+            user.ResetToken = null;
+            user.ResetTokenExpiry = null;
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Password has been successfully reset.");
+        }
+
+        [HttpPost("changePassword")]
+       public async Task<ActionResult> ChangePassword(int id,[FromBody] ChangePasswordDTO dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if(user == null)
