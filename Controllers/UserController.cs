@@ -20,6 +20,7 @@ namespace Interview_Server.Controllers
     {
         private readonly IEmailService _emailService;
         private readonly AuthService _authService;
+        private readonly AuthValidationService _validationService;
         private readonly IImageService _imageService;
         private readonly IRepository<User> _UserRepository;
         private readonly DatabaseContext _context;
@@ -28,16 +29,23 @@ namespace Interview_Server.Controllers
             _UserRepository = repository;
             _context = context;
             _authService = service;
+            _validationService = validationService;
             _imageService = service1;
             _emailService = emailService;
         }
         [HttpPost("Register")]
-        public async Task<ActionResult> Register([FromBody] RegisterDTO dto)
+        public async Task<ActionResult> Register(RegisterDTO dto, [FromForm] IFormFile profileImage)
         {
             if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
             {
-                return BadRequest("User with these credentials already exists");
+                errors.Add("User with these credentials already exists");
             }
+
+            if ((errors.Any())){
+               return BadRequest(new { Errors = errors } );
+            }
+
+            
 
             var passwordHasher = new PasswordHasher<User>();
 
