@@ -1,6 +1,7 @@
 using Interview_Server.Authentication;
 using Interview_Server.Interfaces;
 using Interview_Server.Repositories;
+using Interview_Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -51,6 +52,8 @@ builder.Services.AddScoped<INote, NoteRepository>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthValidationService>();
 
+builder.Services.AddTransient<AuthService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddDbContext<DatabaseContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).LogTo
   (Console.WriteLine, LogLevel.Information));

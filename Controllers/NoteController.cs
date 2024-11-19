@@ -124,7 +124,7 @@ namespace Interview_Server.Controllers
                 {
                     return NotFound("Note not found");
                 }
-                 _noteRepository.deleteAsync(noteId);
+                 await _noteRepository.deleteAsync(noteId);
                 return NoContent();
             }
             catch (Exception e)
