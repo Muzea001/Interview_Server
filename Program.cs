@@ -47,9 +47,14 @@ builder.Services.AddControllers()
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserInterview, UserInterviewRepository>();
 builder.Services.AddScoped<INote, NoteRepository>();
+
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<AuthValidationService>();
+
 builder.Services.AddDbContext<DatabaseContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).LogTo
   (Console.WriteLine, LogLevel.Information));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
