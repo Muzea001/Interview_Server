@@ -10,5 +10,7 @@
         public List<UserInterview> UserInterviews { get; set; } = new List<UserInterview>(); 
         public int LogbookId { get; set; }
         public Logbook Logbook { get; set; }
+
+        public byte[] ProfileImage { get; set; }
     }
 }
