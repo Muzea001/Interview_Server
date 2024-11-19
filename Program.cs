@@ -51,6 +51,7 @@ builder.Services.AddScoped<INote, NoteRepository>();
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthValidationService>();
+builder.Services.AddScoped<InterviewValidationService>();
 
 builder.Services.AddTransient<AuthService>();
 builder.Services.AddScoped<IImageService, ImageService>();

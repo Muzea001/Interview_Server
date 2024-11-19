@@ -23,8 +23,8 @@ namespace Interview_Server.Controllers
         private readonly IImageService _imageService;
         private readonly IRepository<User> _UserRepository;
         private readonly DatabaseContext _context;
-        public UserController(IRepository<User> repository, DatabaseContext context, AuthService service, IImageService service1)
-        public UserController(IRepository<User> repository, DatabaseContext context, AuthService service, AuthValidationService validationService)
+        
+        public UserController(IRepository<User> repository, DatabaseContext context, AuthService service, AuthValidationService validationService, IImageService service1)
         {
             _UserRepository = repository;
             _context = context;
@@ -34,36 +34,34 @@ namespace Interview_Server.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult> Register(RegisterDTO dto) {
-
-            var errors = new List<String>();
-
-            if (!_validationService.ValidateUserName(dto.Username))
-            {
-                errors.Add("Invalid Username. Must be alphanumeric and 3-15 characters");
-            }
-
-            if (!_validationService.ValidatePassword(dto.Password))
-            {
-
-                errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
-
-            }
-
-            if (!_validationService.ValidateEmail(dto.Email))
-            {
-                errors.Add("Invalid Email format");
-            }
-
-            if (!_validationService.ValidateMobile(dto.Mobile))
-            {
-                errors.Add("Invalid Mobile number. Must be 8 digits");
-            }
-
         
         public async Task<ActionResult> Register(RegisterDTO dto, [FromForm] IFormFile profileImage)
         {
-            if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
+                var errors = new List<String>();
+
+                if (!_validationService.ValidateUserName(dto.Username))
+                {
+                    errors.Add("Invalid Username. Must be alphanumeric and 3-15 characters");
+                }
+
+                if (!_validationService.ValidatePassword(dto.Password))
+                {
+
+                    errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
+
+                }
+
+                if (!_validationService.ValidateEmail(dto.Email))
+                {
+                    errors.Add("Invalid Email format");
+                }
+
+                if (!_validationService.ValidateMobile(dto.Mobile))
+                {
+                    errors.Add("Invalid Mobile number. Must be 8 digits");
+                }
+
+                if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
             {
                 errors.Add("User with these credentials already exists");
             }
