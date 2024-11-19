@@ -35,10 +35,6 @@ namespace Interview_Server.Controllers
                 return BadRequest("User with these credentials already exists");
             }
 
-            // Create a random salt for the user
-            using var rng = new RNGCryptoServiceProvider();
-            byte[] salt = new byte[16];  // Salt of 16 bytes
-            rng.GetBytes(salt);
 
             var passwordHasher = new PasswordHasher<User>();
 
