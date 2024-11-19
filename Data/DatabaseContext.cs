@@ -2,8 +2,7 @@
 using Interview_Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
-
+using Microsoft.IdentityModel.Tokens;
 
 public static class SeedData
 {
@@ -68,14 +67,16 @@ public class DatabaseContext : DbContext
             .HasForeignKey<Logbook>(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<User>().HasData(
-      new User() { Id = 1, Username = "Ali Khan", PasswordHash = SeedData.HashPassword("ali123"), Email = "ali@example.com", Mobile = "1234", LogbookId = 1 },
-      new User() { Id = 2, Username = "Muaath Zerouga", PasswordHash = SeedData.HashPassword("muaath123"), Email = "muaath@example.com", Mobile = "1881", LogbookId = 2 },
-      new User() { Id = 3, Username = "John Ferdie", PasswordHash = SeedData.HashPassword("john123"), Email = "john@example.com", Mobile = "123", LogbookId = 3 },
-      new User() { Id = 4, Username = "Magnus Brandsegg", PasswordHash = SeedData.HashPassword("magnus123"), Email = "magnus@example.com", Mobile = "786", LogbookId = 4 },
-      new User() { Id = 5, Username = "Sophia Miller", PasswordHash = SeedData.HashPassword("sophia123"), Email = "sophia@example.com", Mobile = "2250", LogbookId = 5 },
-      new User() { Id = 6, Username = "David Johnson", PasswordHash = SeedData.HashPassword("david123"), Email = "david@example.com", Mobile = "4332", LogbookId = 6 }
-  );
+     
+        
+
+        var usersWithImages = SeedImageForUsers();
+        foreach ( var user in usersWithImages )
+        {
+            modelBuilder.Entity<User>().HasData(user);
+        }
+
+        
 
         modelBuilder.Entity<Interview>().HasData(
             new Interview() { Id = 1, CompanyName = "PayEx", Title = "Technical Interview", Description = "Technical interview after a short speedinterview", Address = "Kongens gate 6, Oslo" },
@@ -120,7 +121,27 @@ public class DatabaseContext : DbContext
         );
     }
 
-        public DbSet<User> Users { get; set; }
+    private List<User> SeedImageForUsers()
+    {
+        var userList = new List<User>();
+        var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SeedImages");
+        var defaultImagePath = Path.Combine(imageDirectory, "default1.jpg");
+
+        if (!File.Exists(defaultImagePath))
+        {
+            throw new FileNotFoundException($"Default image not found at {defaultImagePath}");
+        }
+        var defaultImageBytes = File.ReadAllBytes(defaultImagePath);
+        userList.Add(new User() { Id = 1, Username = "Ali Khan", PasswordHash = SeedData.HashPassword("ali123"), Email = "ali@example.com", Mobile = "1234", LogbookId = 1, ProfileImage = defaultImageBytes });
+        userList.Add(new User() { Id = 2, Username = "Muaath Zerouga", PasswordHash = SeedData.HashPassword("muaath123"), Email = "muaath@example.com", Mobile = "1881", LogbookId = 2, ProfileImage = defaultImageBytes });
+        userList.Add(new User() { Id = 3, Username = "John Ferdie", PasswordHash = SeedData.HashPassword("john123"), Email = "john@example.com", Mobile = "123", LogbookId = 3,ProfileImage = defaultImageBytes });
+        userList.Add(new User() { Id = 4, Username = "Magnus Brandsegg", PasswordHash = SeedData.HashPassword("magnus123"), Email = "magnus@example.com", Mobile = "786", LogbookId = 4 , ProfileImage = defaultImageBytes });
+        userList.Add(new User() { Id = 5, Username = "Sophia Miller", PasswordHash = SeedData.HashPassword("sophia123"), Email = "sophia@example.com", Mobile = "2250", LogbookId = 5, ProfileImage = defaultImageBytes });
+        userList.Add(new User() { Id = 6, Username = "David Johnson", PasswordHash = SeedData.HashPassword("david123"), Email = "david@example.com", Mobile = "4332", LogbookId = 6 , ProfileImage = defaultImageBytes });
+        return userList;
+       }
+
+    public DbSet<User> Users { get; set; }
         public DbSet<Interview> Interviews { get; set; }
         public DbSet<UserInterview> UserInterviews { get; set; }
         public DbSet<Logbook> Logbooks { get; set; }
