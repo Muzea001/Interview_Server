@@ -17,13 +17,14 @@ namespace Interview_Server.Controllers
         private readonly IRepository<User> _UserRepository;
         private readonly IRepository<Interview> _InterviewRepository;
         private readonly IUserInterview _userInterview;
-        public UserInterviewController(IRepository<UserInterview> userInterviewRepository,IUserInterview userInterivew, IRepository<User> userRepository, IRepository<Interview> interviewRepository, InterviewValidationService validationService)
+        private readonly InterviewValidationService _interviewValidationService;
+        public UserInterviewController(IRepository<UserInterview> userInterviewRepository,IUserInterview userInterivew, IRepository<User> userRepository, IRepository<Interview> interviewRepository, InterviewValidationService intservice)
         {
             _userInterviewRepository = userInterviewRepository;
             _UserRepository = userRepository;
             _InterviewRepository = interviewRepository;
             _userInterview = userInterivew;
-            _validationservice = validationService;
+            _interviewValidationService = intservice;
         }
 
         [HttpGet("{userId:int}/interviews")]
@@ -109,44 +110,6 @@ namespace Interview_Server.Controllers
         [HttpPost("create-interview")]
         public async Task<ActionResult> createUserInterview(CreateInterviewDTO interview)
         {
-
-            var errors = new List<String>();
-
-            if (!_validationservice.ValidateTitle(interview.title))
-            {
-               errors.Add("Invalid title. Title must be between 3 and 50 characters long");
-            }
-
-            if(!_validationservice.ValidateDescription(interview.description))
-            {
-                errors.Add("Invalid description. Description must be between 5 and 500 characters long");
-            }
-
-            if (!_validationservice.ValidateTime(interview.time))
-            {
-                errors.Add("Invalid time. Time must be in the future");
-            }
-
-            if (!_validationservice.ValidateAddress(interview.address))
-            {
-                errors.Add("Invalid address. Address must be between 5 and 100 characters long");
-            }
-
-            if (!_validationservice.ValidateDuration(interview.duration))
-            {
-                errors.Add("Invalid duration. Duration must be between 1 and 300 minutes");
-            }
-
-            if (!_validationservice.ValidateCompanyName(interview.companyName))
-            {
-                errors.Add("Invalid company name. Company name must be between 3 and 50 characters long");
-            }
-
-            if (errors.Any())
-            {
-                return BadRequest(errors);
-            }
-
             var user = await _UserRepository.GetByIdAsync(1);
             if (user == null)
             {
@@ -207,6 +170,37 @@ namespace Interview_Server.Controllers
         [HttpPut("{UserInterviewId}")]
         public async Task<ActionResult> updateUserInterview(int UserInterviewId, CreateInterviewDTO interview)
         {
+            var errors = new List<String>();
+
+            if (!_interviewValidationService.ValidateTitle(interview.title))
+            {
+                errors.Add("Invalid title. Title must be between 3 and 50 characters long");
+            }
+
+            if (!_interviewValidationService.ValidateDescription(interview.description))
+            {
+                errors.Add("Invalid description. Description must be between 5 and 500 characters long");
+            }
+
+            if (!_interviewValidationService.ValidateTime(interview.time))
+            {
+                errors.Add("Invalid time. Time must be in the future");
+            }
+
+            if (!_interviewValidationService.ValidateAddress(interview.address))
+            {
+                errors.Add("Invalid address. Address must be between 5 and 100 characters long");
+            }
+
+            if (!_interviewValidationService.ValidateDuration(interview.duration))
+            {
+                errors.Add("Invalid duration. Duration must be between 1 and 300 minutes");
+            }
+
+            if (!_interviewValidationService.ValidateCompanyName(interview.companyName))
+            {
+                errors.Add("Invalid company name. Company name must be between 3 and 50 characters long");
+            }
             var userInterview = await _userInterviewRepository.GetByIdAsync(UserInterviewId);
             if (userInterview == null)
             {

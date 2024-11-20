@@ -53,8 +53,7 @@ builder.Services.AddScoped<INote, NoteRepository>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthValidationService>();
 builder.Services.AddScoped<InterviewValidationService>();
-
-builder.Services.AddTransient<AuthService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddDbContext<DatabaseContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).LogTo
