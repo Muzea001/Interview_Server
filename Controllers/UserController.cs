@@ -35,36 +35,36 @@ namespace Interview_Server.Controllers
         }
 
         [HttpPost("Register")]
+        
         public async Task<ActionResult> Register(RegisterDTO dto)
-
         {
-            var errors = new List<String>();
+                var errors = new List<String>();
 
-            if (!_validationService.ValidateUserName(dto.Username))
+                if (!_validationService.ValidateUserName(dto.Username))
+                {
+                    errors.Add("Invalid Username. Must be alphanumeric and 3-15 characters");
+                }
+
+                if (!_validationService.ValidatePassword(dto.Password))
+                {
+
+                    errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
+
+                }
+
+                if (!_validationService.ValidateEmail(dto.Email))
+                {
+                    errors.Add("Invalid Email format");
+                }
+
+                if (!_validationService.ValidateMobile(dto.Mobile))
+                {
+                    errors.Add("Invalid Mobile number. Must be 8 digits");
+                }
+
+                if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
             {
-                errors.Add("Invalid Username. Must be alphanumeric and 3-15 characters");
-            }
-
-            if (!_validationService.ValidatePassword(dto.Password))
-            {
-
-                errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
-
-            }
-
-            if (!_validationService.ValidateEmail(dto.Email))
-            {
-                errors.Add("Invalid Email format");
-            }
-
-            if (!_validationService.ValidateMobile(dto.Mobile))
-            {
-                errors.Add("Invalid Mobile number. Must be 8 digits");
-            }
-
-            if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
-            {
-                errors.Add("User with these credentials already exists");
+                return NotFound("User with this email not found");
             }
 
             if ((errors.Any()))
@@ -81,7 +81,7 @@ namespace Interview_Server.Controllers
             var passwordHasher = new PasswordHasher<User>();
             var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
 
-            var user = new User
+            if (user == null)
             {
                 Username = dto.Username,
                 Email = dto.Email,
@@ -162,6 +162,7 @@ namespace Interview_Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("resetPassword")]
         public async Task<ActionResult> ResetPassword(ResetPasswordDTO dto)
         {

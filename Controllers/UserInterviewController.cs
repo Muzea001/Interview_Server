@@ -117,6 +117,43 @@ namespace Interview_Server.Controllers
         [HttpPost("create-interview")]
         public async Task<ActionResult> createUserInterview(CreateInterviewDTO interview)
         {
+            var errors = new List<String>();
+
+            if (!_interviewValidationService.ValidateTitle(interview.title))
+            {
+                errors.Add("Invalid title. Title must be between 3 and 50 characters long");
+            }
+
+            if (!_interviewValidationService.ValidateDescription(interview.description))
+            {
+                errors.Add("Invalid description. Description must be between 5 and 500 characters long");
+            }
+
+            if (!_interviewValidationService.ValidateTime(interview.time))
+            {
+                errors.Add("Invalid time. Time must be in the future");
+            }
+
+            if (!_interviewValidationService.ValidateAddress(interview.address))
+            {
+                errors.Add("Invalid address. Address must be between 5 and 100 characters long");
+            }
+
+            if (!_interviewValidationService.ValidateDuration(interview.duration))
+            {
+                errors.Add("Invalid duration. Duration must be between 1 and 300 minutes");
+            }
+
+            if (!_interviewValidationService.ValidateCompanyName(interview.companyName))
+            {
+                errors.Add("Invalid company name. Company name must be between 3 and 50 characters long");
+            }
+
+            if (errors.Any())
+            {
+                return BadRequest(errors);
+            }
+
             var user = await _UserRepository.GetByIdAsync(1);
             if (user == null)
             {
@@ -126,7 +163,7 @@ namespace Interview_Server.Controllers
             Interview newInterview = new Interview
             {
                 Title = interview.title,
-                Description = interview.description,
+                Description = interview.description, 
                 Address = interview.address,
                 CompanyName = interview.companyName,
                 UserInterviews = new List<UserInterview>()
