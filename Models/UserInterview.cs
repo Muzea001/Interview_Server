@@ -4,10 +4,17 @@ public class UserInterview
 {
     public int Id { get; set; }
     public int UserId { get; set; }
+
     public User User { get; set; }
+   
     public int InterviewId { get; set; }
     public Interview Interview { get; set; }
-    public UserRole Role { get; set; } 
+    public int InterviewerId { get; set; }
+
+    public User Interviewer { get; set; }
+
+    public List<User> Applicants { get; set; } = new List<User>();
+
     public DateTime InterviewTime { get; set; }
     public int DurationInMinutes { get; set; }
     public InterviewStatus Status { get; set; }
@@ -22,8 +29,4 @@ public enum InterviewStatus
     Canceled,
     AwaitingFeedback
 }
-public enum UserRole
-{
-    Interviewee,
-    Interviewer
-}
+
