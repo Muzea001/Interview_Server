@@ -1,4 +1,5 @@
 using Interview_Server.Authentication;
+using Interview_Server.Hubs;
 using Interview_Server.Interfaces;
 using Interview_Server.Models;
 using Interview_Server.Repositories;
@@ -57,6 +58,7 @@ builder.Services.AddScoped<InterviewValidationService>();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddSignalR();
 builder.Services.AddDbContext<DatabaseContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).LogTo
   (Console.WriteLine, LogLevel.Information));
@@ -104,6 +106,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.UseCors("AllowAll");
+app.MapHub<NotificationHub>("/notificationHub");
 
 
 app.Run();
