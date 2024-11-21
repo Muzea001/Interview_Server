@@ -1,8 +1,10 @@
 ﻿using Interview_Server.DTOs;
+using Interview_Server.Hubs;
 using Interview_Server.Interfaces;
 using Interview_Server.Models;
 using Interview_Server.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -17,13 +19,18 @@ namespace Interview_Server.Controllers
         private readonly IRepository<Interview> _InterviewRepository;
         private readonly IUserInterview _userInterview;
         private readonly InterviewValidationService _interviewValidationService;
-        public UserInterviewController(IRepository<UserInterview> userInterviewRepository,IUserInterview userInterivew, IRepository<User> userRepository, IRepository<Interview> interviewRepository, InterviewValidationService intservice)
+        private readonly IHubContext<NotificationHub> _hubContext;  
+        public UserInterviewController(IRepository<UserInterview> userInterviewRepository,
+            IUserInterview userInterivew, IRepository<User> userRepository,
+            IRepository<Interview> interviewRepository,
+            InterviewValidationService intservice, IHubContext<NotificationHub> notificationHub)
         {
             _userInterviewRepository = userInterviewRepository;
             _UserRepository = userRepository;
             _InterviewRepository = interviewRepository;
             _userInterview = userInterivew;
             _interviewValidationService = intservice;
+            _hubContext = notificationHub;
         }
 
         [HttpGet("{userId:int}/interviews")]
@@ -44,7 +51,7 @@ namespace Interview_Server.Controllers
                 duration = ui.DurationInMinutes,
                 time = ui.InterviewTime,
                 notes = ui.Notes,
-                status = InterviewStatus.AwaitingFeedback
+                status = ui.Status,
                 
             }); 
             return Ok(getInterviewDTOS);
@@ -196,7 +203,9 @@ namespace Interview_Server.Controllers
             {
                 return NotFound("UserInterview not found");
             }
+            var notificationMessage = $"Interview status for UserInterview ID {UserInterviewId} has changed to {newStatus}.";
             await _userInterview.ChangeStatusAsync(UserInterviewId, (InterviewStatus)parsedStatus);
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);  
             return Ok(userInterview);
         }
 
