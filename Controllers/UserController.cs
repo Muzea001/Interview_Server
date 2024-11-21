@@ -33,6 +33,7 @@ namespace Interview_Server.Controllers
             _imageService = service1;
             _emailService = emailService;
         }
+
         [HttpPost("Register")]
         public async Task<ActionResult> Register(RegisterDTO dto)
 
@@ -75,9 +76,10 @@ namespace Interview_Server.Controllers
                return BadRequest(new { Errors = errors } );
             }
 
-            
-
+            var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SeedImages");
+            var defaultImagePath = Path.Combine(imageDirectory, "default1.jpg");
             var passwordHasher = new PasswordHasher<User>();
+            var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
 
             var user = new User
             {
@@ -85,7 +87,8 @@ namespace Interview_Server.Controllers
                 Email = dto.Email,
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
-                ProfileImage = null 
+                ProfileImage = defaultImageBytes
+
             };
 
                     errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
@@ -102,21 +105,47 @@ namespace Interview_Server.Controllers
                     errors.Add("Invalid Mobile number. Must be 8 digits");
                 }
 
-                if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
+
+        [HttpPost("forgotPassword")]
+        public async Task<ActionResult> ForgotPassword(string email)
+        {
+            try
             {
-                return NotFound("User with this email not found");
+                // Find the user by email
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                {
+                    return NotFound("User with this email not found");
+                }
+
+                var resetToken = Guid.NewGuid().ToString();
+                user.ResetToken = resetToken;
+                user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15); 
+                await _context.SaveChangesAsync();
+
+                var mailData = new MailData
+                {
+                    MailTo = user.Email,
+                    MailToId = user.Username, 
+                    Subject = "Password Reset Request",
+                    Body = $"Your password reset code is: {resetToken}"
+                };
+
+                var emailSent = await _emailService.SendEmailAsync(mailData);
+
+                if (!emailSent)
+                {
+                    return StatusCode(500, "Error sending email. Please try again later.");
+                }
+
+                return Ok("A password reset code has been sent to your email.");
             }
-
-            var resetToken = Guid.NewGuid().ToString();
-
-            user.ResetToken = resetToken;
-            user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15); 
-            await _context.SaveChangesAsync();
-
-            await _emailService.SendEmailAsync(user.Email, "Password Reset Request",
-                $"Your password reset code is: {resetToken}");
-
-            return Ok("A password reset code has been sent to your email.");
+            catch (Exception ex)
+            {
+                // Log error (optional)
+                Console.WriteLine($"Error in ForgotPassword: {ex.Message}");
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPost("resetPassword")]
@@ -148,7 +177,8 @@ namespace Interview_Server.Controllers
                 return NotFound("User with this id not found");
             }
             var passwordHasher = new PasswordHasher<User>();
-            var verificationResult = passwordHasher.VerifyHashedPassword(null, dto.OldPassword, user.PasswordHash);
+            var oldPassHash = passwordHasher.HashPassword(user, dto.OldPassword);
+            var verificationResult = passwordHasher.VerifyHashedPassword(null,oldPassHash,user.PasswordHash);
             if(verificationResult== PasswordVerificationResult.Success)
             {
                 user.PasswordHash = passwordHasher.HashPassword(user, dto.NewPassword);

@@ -1,5 +1,6 @@
 using Interview_Server.Authentication;
 using Interview_Server.Interfaces;
+using Interview_Server.Models;
 using Interview_Server.Repositories;
 using Interview_Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -53,7 +54,8 @@ builder.Services.AddScoped<INote, NoteRepository>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthValidationService>();
 builder.Services.AddScoped<InterviewValidationService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddDbContext<DatabaseContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).LogTo
