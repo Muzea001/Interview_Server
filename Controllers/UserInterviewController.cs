@@ -182,7 +182,7 @@ namespace Interview_Server.Controllers
                 InterviewTime = interview.time.Value,
                 DurationInMinutes = interview.duration,
                 Notes = new List<Note>(),
-                Role = UserRole.Interviewee
+                
             };
 
             await _userInterviewRepository.AddAsync(userInterview);
