@@ -200,14 +200,18 @@ namespace Interview_Server.Controllers
                 return BadRequest("Invalid status");
             }
 
-            var userInterview = await _userInterviewRepository.GetByIdAsync(UserInterviewId); 
+            var userInterview = await _userInterviewRepository.GetByIdAsync(UserInterviewId);
             if (userInterview == null)
             {
                 return NotFound("UserInterview not found");
             }
+
+            userInterview.Status = (InterviewStatus)parsedStatus; // Update the status
+
+            await _userInterviewRepository.EditAsync(userInterview); // Save the changes
+
             var notificationMessage = $"Interview status for UserInterview ID {UserInterviewId} has changed to {newStatus}.";
-            await _userInterview.ChangeStatusAsync(UserInterviewId, (InterviewStatus)parsedStatus);
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);  
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
             return Ok(userInterview);
         }
 
