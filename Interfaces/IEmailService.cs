@@ -1,7 +1,9 @@
-﻿namespace Interview_Server.Interfaces
+﻿using Interview_Server.Models;
+
+namespace Interview_Server.Interfaces
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(string to, string subject, string body);
+        Task<bool> SendEmailAsync(MailData mailData);
     }
 }
