@@ -91,19 +91,33 @@ namespace Interview_Server.Controllers
 
             };
 
-                    errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
+            await _UserRepository.AddAsync(user);
+            return Ok("User Registered Successfully");
+        }
 
-                }
+        [HttpPost("{userId}/UploadProfileImage")]
+        public async Task<ActionResult> UploadProfileImage(int userId, [FromForm] FileUploadRequest request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
 
-                if (!_validationService.ValidateEmail(dto.Email))
-                {
-                    errors.Add("Invalid Email format");
-                }
+            if (request.ProfileImage == null || request.ProfileImage.Length == 0)
+            {
+                return BadRequest("Invalid image file");
+            }
 
-                if (!_validationService.ValidateMobile(dto.Mobile))
-                {
-                    errors.Add("Invalid Mobile number. Must be 8 digits");
-                }
+            using (var memoryStream = new MemoryStream())
+            {
+                await request.ProfileImage.CopyToAsync(memoryStream);
+                user.ProfileImage = memoryStream.ToArray(); 
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok("Profile image uploaded successfully");
+        }
 
 
         [HttpPost("forgotPassword")]
