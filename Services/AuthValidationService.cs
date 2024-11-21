@@ -18,7 +18,7 @@ namespace Interview_Server.Authentication
             if (string.IsNullOrWhiteSpace(password))
             return false;
 
-                var regex = new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+            var regex = new Regex(@"^(?=.*[A-Z](?=.*[a-z]{8,})(?=.*[@_\-])[A-Za-z\d@_\-]{8,}$");
             return regex.IsMatch(password);
         }
 
