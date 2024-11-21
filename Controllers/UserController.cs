@@ -35,45 +35,46 @@ namespace Interview_Server.Controllers
         }
 
         [HttpPost("Register")]
-        
         public async Task<ActionResult> Register(RegisterDTO dto)
+
         {
-                var errors = new List<String>();
+            var errors = new List<String>();
 
-                if (!_validationService.ValidateUserName(dto.Username))
-                {
-                    errors.Add("Invalid Username. Must be alphanumeric and 3-15 characters");
-                }
-
-                if (!_validationService.ValidatePassword(dto.Password))
-                {
-
-                    errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
-
-                }
-
-                if (!_validationService.ValidateEmail(dto.Email))
-                {
-                    errors.Add("Invalid Email format");
-                }
-
-                if (!_validationService.ValidateMobile(dto.Mobile))
-                {
-                    errors.Add("Invalid Mobile number. Must be 8 digits");
-                }
-
-                if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
+            if (!_validationService.ValidateUserName(dto.Username))
             {
-                return NotFound("User with this email not found");
+                errors.Add("Invalid Username. Must be alphanumeric and 3-15 characters");
+            }
+
+            if (!_validationService.ValidatePassword(dto.Password))
+            {
+
+                errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
+
+            }
+
+            if (!_validationService.ValidateEmail(dto.Email))
+            {
+                errors.Add("Invalid Email format");
+            }
+
+            if (!_validationService.ValidateMobile(dto.Mobile))
+            {
+                errors.Add("Invalid Mobile number. Must be 8 digits");
+            }
+
+            if (await _context.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
+            {
+                errors.Add("User with these credentials already exists");
             }
 
             if ((errors.Any()))
             {
                 return BadRequest(new { Errors = errors });
             }
-           
-            if ((errors.Any())){
-               return BadRequest(new { Errors = errors } );
+
+            if ((errors.Any()))
+            {
+                return BadRequest(new { Errors = errors });
             }
 
             var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SeedImages");
@@ -81,7 +82,7 @@ namespace Interview_Server.Controllers
             var passwordHasher = new PasswordHasher<User>();
             var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
 
-            if (user == null)
+            var user = new User
             {
                 Username = dto.Username,
                 Email = dto.Email,
@@ -112,7 +113,7 @@ namespace Interview_Server.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 await request.ProfileImage.CopyToAsync(memoryStream);
-                user.ProfileImage = memoryStream.ToArray(); 
+                user.ProfileImage = memoryStream.ToArray();
             }
 
             await _context.SaveChangesAsync();
@@ -134,13 +135,13 @@ namespace Interview_Server.Controllers
 
                 var resetToken = Guid.NewGuid().ToString();
                 user.ResetToken = resetToken;
-                user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15); 
+                user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15);
                 await _context.SaveChangesAsync();
 
                 var mailData = new MailData
                 {
                     MailTo = user.Email,
-                    MailToId = user.Username, 
+                    MailToId = user.Username,
                     Subject = "Password Reset Request",
                     Body = $"Your password reset code is: {resetToken}"
                 };
@@ -162,7 +163,6 @@ namespace Interview_Server.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("resetPassword")]
         public async Task<ActionResult> ResetPassword(ResetPasswordDTO dto)
         {
@@ -184,17 +184,17 @@ namespace Interview_Server.Controllers
         }
 
         [HttpPost("changePassword")]
-       public async Task<ActionResult> ChangePassword(int id,[FromBody] ChangePasswordDTO dto)
+        public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordDTO dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound("User with this id not found");
             }
             var passwordHasher = new PasswordHasher<User>();
             var oldPassHash = passwordHasher.HashPassword(user, dto.OldPassword);
-            var verificationResult = passwordHasher.VerifyHashedPassword(null,oldPassHash,user.PasswordHash);
-            if(verificationResult== PasswordVerificationResult.Success)
+            var verificationResult = passwordHasher.VerifyHashedPassword(null, oldPassHash, user.PasswordHash);
+            if (verificationResult == PasswordVerificationResult.Success)
             {
                 user.PasswordHash = passwordHasher.HashPassword(user, dto.NewPassword);
                 await _context.SaveChangesAsync();
@@ -224,7 +224,7 @@ namespace Interview_Server.Controllers
             }
 
             var token = _authService.GenerateToken(user);
-           
+
             return Ok(new { Token = token });
 
         }
@@ -275,7 +275,7 @@ namespace Interview_Server.Controllers
             {
                 return NotFound();
             }
-             await _UserRepository.deleteAsync(id);
+            await _UserRepository.deleteAsync(id);
             return NoContent();
         }
 
