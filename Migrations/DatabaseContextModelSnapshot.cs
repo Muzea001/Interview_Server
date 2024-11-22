@@ -99,6 +99,9 @@ namespace Interview_Server.Migrations
                     b.Property<int>("InterviewId")
                         .HasColumnType("integer");
 
+                    b.Property<int[]>("Label")
+                        .HasColumnType("integer[]");
+
                     b.Property<int>("LogbookId")
                         .HasColumnType("integer");
 
@@ -120,6 +123,7 @@ namespace Interview_Server.Migrations
                             Id = 1,
                             Content = "Learned about interview preparation and key technical questions",
                             InterviewId = 1,
+                            Label = new[] { 0, 2 },
                             LogbookId = 1,
                             Title = "Log 1"
                         },
@@ -128,6 +132,7 @@ namespace Interview_Server.Migrations
                             Id = 2,
                             Content = "Studied Python and algorithms for the next interview",
                             InterviewId = 1,
+                            Label = new[] { 4, 0 },
                             LogbookId = 1,
                             Title = "Log 2"
                         },
@@ -136,6 +141,7 @@ namespace Interview_Server.Migrations
                             Id = 3,
                             Content = "Discovered effective ways to answer behavioral questions",
                             InterviewId = 3,
+                            Label = new[] { 2, 1 },
                             LogbookId = 2,
                             Title = "Log 1"
                         },
@@ -144,6 +150,7 @@ namespace Interview_Server.Migrations
                             Id = 4,
                             Content = "Reviewed data analysis tools like Excel, Tableau, and Power BI",
                             InterviewId = 3,
+                            Label = new[] { 0, 5 },
                             LogbookId = 2,
                             Title = "Log 2"
                         },
@@ -152,6 +159,7 @@ namespace Interview_Server.Migrations
                             Id = 5,
                             Content = "Prepared for coding tests and problem-solving strategies",
                             InterviewId = 4,
+                            Label = new[] { 4, 0 },
                             LogbookId = 3,
                             Title = "Log 1"
                         },
@@ -160,6 +168,7 @@ namespace Interview_Server.Migrations
                             Id = 6,
                             Content = "Analyzed data sets and created data reports",
                             InterviewId = 4,
+                            Label = new[] { 7, 0 },
                             LogbookId = 3,
                             Title = "Log 2"
                         },
@@ -168,6 +177,7 @@ namespace Interview_Server.Migrations
                             Id = 7,
                             Content = "Learned SQL database optimization techniques",
                             InterviewId = 2,
+                            Label = new[] { 0, 4 },
                             LogbookId = 4,
                             Title = "Log 1"
                         },
@@ -176,6 +186,7 @@ namespace Interview_Server.Migrations
                             Id = 8,
                             Content = "Focused on advanced SQL queries for interviews",
                             InterviewId = 2,
+                            Label = new[] { 0, 4 },
                             LogbookId = 4,
                             Title = "Log 2"
                         });

@@ -134,7 +134,7 @@ namespace Interview_Server.Controllers
                 }
 
                 var resetToken = Guid.NewGuid().ToString();
-                user.ResetToken = resetToken;
+                user.ResetToken = resetToken;   
                 user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15);
                 await _context.SaveChangesAsync();
 

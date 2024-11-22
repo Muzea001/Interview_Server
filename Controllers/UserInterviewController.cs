@@ -1,5 +1,4 @@
 ﻿using Interview_Server.DTOs;
-using Interview_Server.Hubs;
 using Interview_Server.Interfaces;
 using Interview_Server.Models;
 using Interview_Server.Services;
@@ -186,8 +185,9 @@ namespace Interview_Server.Controllers
             };
 
             await _userInterviewRepository.AddAsync(userInterview);
-            
-            
+            var notificationMessage = $"A new interview has been created with ID {userInterview.InterviewId}.";
+            await _hubContext.Clients.All.SendAsync(notificationMessage);   
+
 
             return CreatedAtAction(nameof(getUserInterviewById), new { UserInterviewId = userInterview.Id }, userInterview);
         }
@@ -206,13 +206,14 @@ namespace Interview_Server.Controllers
                 return NotFound("UserInterview not found");
             }
 
-            userInterview.Status = (InterviewStatus)parsedStatus; // Update the status
+            userInterview.Status = (InterviewStatus)parsedStatus; 
 
-            await _userInterviewRepository.EditAsync(userInterview); // Save the changes
+            await _userInterviewRepository.EditAsync(userInterview);
 
             // hello
             var notificationMessage = $"Interview status for UserInterview ID {UserInterviewId} has changed to {newStatus}.";
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
+            await _hubContext.Clients.Group("1")
+                .SendAsync("ReceiveNotification", notificationMessage);
             return Ok(userInterview);
         }
 

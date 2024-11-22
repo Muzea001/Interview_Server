@@ -97,15 +97,79 @@ public class DatabaseContext : DbContext
         );
 
         modelBuilder.Entity<Log>().HasData(
-            new Log() { Id = 1, LogbookId = 1, Title = "Log 1", Content = "Learned about interview preparation and key technical questions", InterviewId = 1 },
-            new Log() { Id = 2, LogbookId = 1, Title = "Log 2", Content = "Studied Python and algorithms for the next interview", InterviewId = 1 },
-            new Log() { Id = 3, LogbookId = 2, Title = "Log 1", Content = "Discovered effective ways to answer behavioral questions", InterviewId = 3 },
-            new Log() { Id = 4, LogbookId = 2, Title = "Log 2", Content = "Reviewed data analysis tools like Excel, Tableau, and Power BI", InterviewId = 3 },
-            new Log() { Id = 5, LogbookId = 3, Title = "Log 1", Content = "Prepared for coding tests and problem-solving strategies", InterviewId = 4 },
-            new Log() { Id = 6, LogbookId = 3, Title = "Log 2", Content = "Analyzed data sets and created data reports", InterviewId = 4 },
-            new Log() { Id = 7, LogbookId = 4, Title = "Log 1", Content = "Learned SQL database optimization techniques", InterviewId = 2 },
-            new Log() { Id = 8, LogbookId = 4, Title = "Log 2", Content = "Focused on advanced SQL queries for interviews", InterviewId = 2 }
-        );
+      new Log()
+      {
+          Id = 1,
+          LogbookId = 1,
+          Title = "Log 1",
+          Content = "Learned about interview preparation and key technical questions",
+          InterviewId = 1,
+          Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Behavioral }
+      },
+      new Log()
+      {
+          Id = 2,
+          LogbookId = 1,
+          Title = "Log 2",
+          Content = "Studied Python and algorithms for the next interview",
+          InterviewId = 1,
+          Label = new List<LogLabel> { LogLabel.Coding, LogLabel.Technical }
+      },
+      new Log()
+      {
+          Id = 3,
+          LogbookId = 2,
+          Title = "Log 1",
+          Content = "Discovered effective ways to answer behavioral questions",
+          InterviewId = 3,
+          Label = new List<LogLabel> { LogLabel.Behavioral, LogLabel.SoftSkill }
+      },
+      new Log()
+      {
+          Id = 4,
+          LogbookId = 2,
+          Title = "Log 2",
+          Content = "Reviewed data analysis tools like Excel, Tableau, and Power BI",
+          InterviewId = 3,
+          Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Design }
+      },
+      new Log()
+      {
+          Id = 5,
+          LogbookId = 3,
+          Title = "Log 1",
+          Content = "Prepared for coding tests and problem-solving strategies",
+          InterviewId = 4,
+          Label = new List<LogLabel> { LogLabel.Coding, LogLabel.Technical }
+      },
+      new Log()
+      {
+          Id = 6,
+          LogbookId = 3,
+          Title = "Log 2",
+          Content = "Analyzed data sets and created data reports",
+          InterviewId = 4,
+          Label = new List<LogLabel> { LogLabel.Documentation, LogLabel.Technical }
+      },
+      new Log()
+      {
+          Id = 7,
+          LogbookId = 4,
+          Title = "Log 1",
+          Content = "Learned SQL database optimization techniques",
+          InterviewId = 2,
+          Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Coding }
+      },
+      new Log()
+      {
+          Id = 8,
+          LogbookId = 4,
+          Title = "Log 2",
+          Content = "Focused on advanced SQL queries for interviews",
+          InterviewId = 2,
+          Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Coding }
+      }
+  );
 
         modelBuilder.Entity<Note>().HasData(
             new Note() { Id = 1, Title = "Quick note from first interview", Content = "Need to smile more on interviews", UserInterviewId = 1, Status = NoteStatus.Reviewed },
