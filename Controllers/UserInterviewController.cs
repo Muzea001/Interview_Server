@@ -212,8 +212,7 @@ namespace Interview_Server.Controllers
 
             // hello
             var notificationMessage = $"Interview status for UserInterview ID {UserInterviewId} has changed to {newStatus}.";
-            await _hubContext.Clients.Group("1")
-                .SendAsync("ReceiveNotification", notificationMessage);
+            await _hubContext.Clients.Group(userInterview.UserId.ToString()).SendAsync("ReceiveNotification", notificationMessage);
             return Ok(userInterview);
         }
 
