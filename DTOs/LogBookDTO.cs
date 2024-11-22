@@ -3,5 +3,6 @@
     public class LogBookDTO
     {
         public string title { get; set; }
+        public List<LogDTO> logs { get; set; }
     }
 }

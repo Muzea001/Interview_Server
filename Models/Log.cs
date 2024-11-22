@@ -12,6 +12,24 @@
         public int InterviewId { get; set; }
         public Interview Interview { get; set; }
 
+        public List<LogLabel>? Label { get; set; }
+
+
+    }
+
+
+    public enum LogLabel
+    {
+        Technical,
+        SoftSkill,
+        Behavioral,
+        Managerial,
+        Coding,
+        Design,
+        Testing,
+        Documentation,
+        Research,
+        Presentation
     }
 
 }
