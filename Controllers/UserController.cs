@@ -91,9 +91,16 @@ namespace Interview_Server.Controllers
                 ProfileImage = defaultImageBytes
 
             };
+            var token = _authService.GenerateToken(user);
 
+            //fixed
             await _UserRepository.AddAsync(user);
-            return Ok("User Registered Successfully");
+            var response = new CustomRegisterAPIReponse()
+            {
+                user = user,
+                Token = token
+            };
+            return Ok(response);
         }
 
         [HttpPost("{userId}/UploadProfileImage")]
