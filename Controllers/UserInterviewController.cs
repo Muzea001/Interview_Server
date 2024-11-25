@@ -181,6 +181,7 @@ namespace Interview_Server.Controllers
                 InterviewTime = interview.time.Value,
                 DurationInMinutes = interview.duration,
                 Notes = new List<Note>(),
+                isArchived = false
                 
             };
 
