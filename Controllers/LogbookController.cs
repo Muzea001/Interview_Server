@@ -50,7 +50,7 @@ namespace Interview_Server.Controllers
         }
 
         [HttpGet("{logbookId}")]
-        public async Task<ActionResult<LogBookDTO>> GetLogbookById(int logbookId)
+        public async Task<ActionResult<Logbook>> GetLogbookById(int logbookId)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Interview_Server.Controllers
                         label = a.Label,    
                     }).ToList()
                 };
-                return Ok(logbookDTO);
+                return Ok(logbook);
             }
             catch (Exception e)
             {
