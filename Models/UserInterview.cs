@@ -7,7 +7,8 @@ public class UserInterview
     public User User { get; set; }
     public int InterviewId { get; set; }
     public Interview Interview { get; set; }
-    public UserRole Role { get; set; }
+    
+    public bool isArchived { get; set; }
     public DateTime InterviewTime { get; set; }
     public int DurationInMinutes { get; set; }
     public InterviewStatus Status { get; set; }
@@ -21,9 +22,4 @@ public enum InterviewStatus
     Completed,
     Canceled,
     AwaitingFeedback
-}
-public enum UserRole
-{
-    Interviewee,
-    Interviewer
 }
