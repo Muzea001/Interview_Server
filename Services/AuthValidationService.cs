@@ -13,12 +13,12 @@ namespace Interview_Server.Authentication
             return regex.IsMatch(userName);
         }
 
-        public bool ValidatePassword(string password)
+       public bool ValidatePassword(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
-            return false;
+                return false;
 
-            var regex = new Regex(@"^(?=.*[A-Z])(?=.*[!@_-])[A-Za-z\d!@_-]{8,}$");
+            var regex = new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$");
             return regex.IsMatch(password);
         }
 
