@@ -81,10 +81,10 @@ public class DatabaseContext : DbContext
         );
 
         modelBuilder.Entity<UserInterview>().HasData(
-            new UserInterview() { Id = 1, UserId = 1, InterviewId = 1, InterviewerId = 2, DurationInMinutes = 120, InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 2, UserId = 2, InterviewId = 3, InterviewerId = 2, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 15, 10, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 3, UserId = 3, InterviewId = 4, InterviewerId = 3, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 16, 11, 15, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 4, UserId = 4, InterviewId = 2, InterviewerId = 4, DurationInMinutes = 45,  InterviewTime = new DateTime(2024, 11, 18, 15, 45, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled }
+            new UserInterview() { Id = 1, UserId = 1, InterviewId = 1, DurationInMinutes = 120, InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 2, UserId = 2, InterviewId = 3, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 15, 10, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 3, UserId = 3, InterviewId = 4, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 16, 11, 15, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 4, UserId = 4, InterviewId = 2, DurationInMinutes = 45,  InterviewTime = new DateTime(2024, 11, 18, 15, 45, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled }
         );
 
         modelBuilder.Entity<Logbook>().HasData(
