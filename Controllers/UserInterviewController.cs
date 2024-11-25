@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Interview_Server.Controllers
 {
-    [ApiController]
+    [ApiController] 
     [Route("id/[Controller]")]
     public class UserInterviewController : ControllerBase
     {

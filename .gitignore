@@ -461,6 +461,4 @@ $RECYCLE.BIN/
 *.deps.json
 *.runtimeconfig.json
 
-# Ignore specific environment config files
-appsettings.Development.json
-appsettings.json
+
