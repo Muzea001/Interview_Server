@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace Interview_Server.DTOs
 {
@@ -16,6 +17,10 @@ namespace Interview_Server.DTOs
 
             [Required]
             public string Mobile { get; set; }
-        
+
+            public byte[] ProfileImage { get; set; }
+
+
+
     }
 }

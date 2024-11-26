@@ -72,9 +72,6 @@ public class DatabaseContext : DbContext
             .HasForeignKey<Logbook>(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-     
-        
-
         var usersWithImages = SeedImageForUsers();
         foreach ( var user in usersWithImages )
         {
@@ -247,7 +244,7 @@ public class DatabaseContext : DbContext
         return userList;
        }
 
-    public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Interview> Interviews { get; set; }
         public DbSet<UserInterview> UserInterviews { get; set; }
         public DbSet<Logbook> Logbooks { get; set; }

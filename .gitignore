@@ -462,3 +462,5 @@ $RECYCLE.BIN/
 *.runtimeconfig.json
 
 
+appsettings.json
+
