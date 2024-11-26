@@ -244,15 +244,9 @@ public class DatabaseContext : DbContext
         userList.Add(new User() { Id = 4, Username = "Magnus Brandsegg", PasswordHash = SeedData.HashPassword("magnus123"), Email = "magnus@example.com", Mobile = "786", LogbookId = 4, ProfileImage = defaultImageDataUrl });
         userList.Add(new User() { Id = 5, Username = "Sophia Miller", PasswordHash = SeedData.HashPassword("sophia123"), Email = "sophia@example.com", Mobile = "2250", LogbookId = 5, ProfileImage = defaultImageDataUrl });
         userList.Add(new User() { Id = 6, Username = "David Johnson", PasswordHash = SeedData.HashPassword("david123"), Email = "david@example.com", Mobile = "4332", LogbookId = 6, ProfileImage = defaultImageDataUrl });
+        userList.Add(new User() { Id = 7, Username = "Tina Miller", PasswordHash = SeedData.HashPassword("tina123"), Email = "tina@example.com", Mobile = "9999", LogbookId = 7, ProfileImage = defaultImageDataUrl });
+        userList.Add(new User() { Id = 8, Username = "Linda Johnson", PasswordHash = SeedData.HashPassword("linda786"), Email = "linda@example.com", Mobile = "1884", LogbookId = 8, ProfileImage = defaultImageDataUrl });
 
-        userList.Add(new User() { Id = 1, Username = "Ali Khan", PasswordHash = SeedData.HashPassword("ali123"), Email = "ali@example.com", Mobile = "1234", LogbookId = 1, ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 2, Username = "Muaath Zerouga", PasswordHash = SeedData.HashPassword("muaath123"), Email = "muaath@example.com", Mobile = "1881", LogbookId = 2, ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 3, Username = "John Ferdie", PasswordHash = SeedData.HashPassword("john123"), Email = "john@example.com", Mobile = "123", LogbookId = 3,ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 4, Username = "Magnus Brandsegg", PasswordHash = SeedData.HashPassword("magnus123"), Email = "magnus@example.com", Mobile = "786", LogbookId = 4 , ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 5, Username = "Sophia Miller", PasswordHash = SeedData.HashPassword("sophia123"), Email = "sophia@example.com", Mobile = "2250", LogbookId = 5, ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 6, Username = "David Johnson", PasswordHash = SeedData.HashPassword("david123"), Email = "david@example.com", Mobile = "4332", LogbookId = 6 , ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 7, Username = "Tina Miller", PasswordHash = SeedData.HashPassword("tina123"), Email = "tina@example.com", Mobile = "9999", LogbookId = 7, ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 8, Username = "Linda Johnson", PasswordHash = SeedData.HashPassword("linda786"), Email = "linda@example.com", Mobile = "1884", LogbookId = 8, ProfileImage = defaultImageBytes });
             
         return userList;
     }

@@ -92,11 +92,12 @@ namespace Interview_Server.Controllers
                 Mobile = dto.Mobile,
                 ProfileImage = defaultImageDataUrl 
             };
-
+            await _UserRepository.AddAsync(user);
+            await _context.SaveChangesAsync(); 
             var token = _authService.GenerateToken(user);
 
             //fixed
-            await _UserRepository.AddAsync(user);
+           
             var response = new CustomRegisterAPIReponse()
             {
                 user = user,
