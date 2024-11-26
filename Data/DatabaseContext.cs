@@ -21,7 +21,7 @@ public class DatabaseContext : DbContext
 
     }
 
-   
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -73,12 +73,12 @@ public class DatabaseContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         var usersWithImages = SeedImageForUsers();
-        foreach ( var user in usersWithImages )
+        foreach (var user in usersWithImages)
         {
             modelBuilder.Entity<User>().HasData(user);
         }
 
-        
+
 
         modelBuilder.Entity<Interview>().HasData(
             new Interview() { Id = 1, CompanyName = "PayEx", Title = "Technical Interview", Description = "Technical interview after a short speedinterview", Address = "Kongens gate 6, Oslo" },
@@ -89,18 +89,22 @@ public class DatabaseContext : DbContext
             new Interview() { Id = 6, CompanyName = "Accenture", Title = "Cloud Engineer Interview", Description = "Interview to get to know each other", Address = "Rådhusgata 27, Oslo" },
             new Interview() { Id = 7, CompanyName = "Telenor", Title = "Software Developer Interview", Description = "Interview for the position of software developer", Address = "Snarøyveien 30, Fornebu" },
             new Interview() { Id = 8, CompanyName = "DNB", Title = "Data Scientist Interview", Description = " Case Interview for the position of data scientist", Address = "Dronning Eufemias gate 30, Oslo" }
-            
+
         );
 
         modelBuilder.Entity<UserInterview>().HasData(
             new UserInterview() { Id = 1, UserId = 1, InterviewId = 1, isArchived = false, DurationInMinutes = 120, InterviewTime = new DateTime(2024, 11, 11, 14, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 2, UserId = 2, InterviewId = 2, isArchived = false, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 15, 10, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 3, UserId = 3, InterviewId = 3, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 16, 11, 15, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 4, UserId = 4, InterviewId = 4, isArchived = false, DurationInMinutes = 45,  InterviewTime = new DateTime(2024, 11, 18, 15, 45, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 5, UserId = 5, InterviewId = 5, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 20, 13, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 6, UserId = 6, InterviewId = 6, isArchived = false, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 22, 14, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 7, UserId = 7, InterviewId = 7, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 24, 10, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
-            new UserInterview() { Id = 8, UserId = 8, InterviewId = 8, isArchived = false, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 26, 11, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled}
+            new UserInterview() { Id = 2, UserId = 1, InterviewId = 2, isArchived = false, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 15, 10, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 3, UserId = 1, InterviewId = 3, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 16, 11, 15, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 4, UserId = 1, InterviewId = 4, isArchived = false, DurationInMinutes = 45, InterviewTime = new DateTime(2024, 11, 18, 15, 45, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 5, UserId = 1, InterviewId = 5, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 20, 13, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 6, UserId = 2, InterviewId = 2, isArchived = false, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 15, 10, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 7, UserId = 3, InterviewId = 3, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 16, 11, 15, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 8, UserId = 4, InterviewId = 4, isArchived = false, DurationInMinutes = 45, InterviewTime = new DateTime(2024, 11, 18, 15, 45, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 9, UserId = 5, InterviewId = 5, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 20, 13, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 10, UserId = 6, InterviewId = 6, isArchived = false, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 22, 14, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 11, UserId = 7, InterviewId = 7, isArchived = false, DurationInMinutes = 60, InterviewTime = new DateTime(2024, 11, 24, 10, 30, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled },
+            new UserInterview() { Id = 12, UserId = 8, InterviewId = 8, isArchived = false, DurationInMinutes = 90, InterviewTime = new DateTime(2024, 11, 26, 11, 0, 0, DateTimeKind.Utc), Status = InterviewStatus.Scheduled }
         );
 
         modelBuilder.Entity<Logbook>().HasData(
@@ -110,7 +114,7 @@ public class DatabaseContext : DbContext
             new Logbook() { Id = 4, UserId = 4, Logs = new List<Log>(), Title = "Magnus's Logbook" },
             new Logbook() { Id = 5, UserId = 5, Logs = new List<Log>(), Title = "Sophia's Logbook" },
             new Logbook() { Id = 6, UserId = 6, Logs = new List<Log>(), Title = "David's Logbook" },
-            new Logbook() { Id = 7, UserId = 7, Logs = new List<Log>(), Title = "Tina's Logbook"},
+            new Logbook() { Id = 7, UserId = 7, Logs = new List<Log>(), Title = "Tina's Logbook" },
             new Logbook() { Id = 8, UserId = 8, Logs = new List<Log>(), Title = "Linda's Logbook" }
         );
 
@@ -188,8 +192,6 @@ public class DatabaseContext : DbContext
           Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Coding }
       },
 
-      
-
       new Log() { Id = 9, LogbookId = 5, Title = "Log 1", Content = "Reviewed STAR method for behavioral questions", InterviewId = 3, Label = new List<LogLabel> { LogLabel.Behavioral, LogLabel.SoftSkill }, },
       new Log() { Id = 10, LogbookId = 5, Title = "Log 2", Content = "Worked on data cleaning and data analysis", InterviewId = 4, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Documentation }, },
       new Log() { Id = 11, LogbookId = 6, Title = "Log 1", Content = "Reviewed cloud computing concepts and cloud services", InterviewId = 6, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Design }, },
@@ -197,7 +199,13 @@ public class DatabaseContext : DbContext
       new Log() { Id = 13, LogbookId = 7, Title = "Log 1", Content = "Reviewed software development life cycle and agile methodologies", InterviewId = 7, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Managerial }, },
       new Log() { Id = 14, LogbookId = 7, Title = "Log 2", Content = "Prepared for software developer interview questions", InterviewId = 7, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Coding }, },
       new Log() { Id = 15, LogbookId = 8, Title = "Log 1", Content = "Reviewed data analysis tools and data visualization techniques", InterviewId = 8, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Design }, },
-      new Log() { Id = 16, LogbookId = 8, Title = "Log 2", Content = "Prepared for data scientist interview questions", InterviewId = 8, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Coding }, }
+      new Log() { Id = 16, LogbookId = 8, Title = "Log 2", Content = "Prepared for data scientist interview questions", InterviewId = 8, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Coding }, },
+      new Log() { Id = 17, LogbookId = 1, Title = "Log 1", Content = "Learned about interview preparation and key technical questions", InterviewId = 2, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Behavioral }, },
+      new Log() { Id = 18, LogbookId = 1, Title = "Log 2", Content = "Studied Python and algorithms for the next interview", InterviewId = 2, Label = new List<LogLabel> { LogLabel.Coding, LogLabel.Technical }, },
+      new Log() { Id = 19, LogbookId = 1, Title = "Log 1", Content = "Discovered effective ways to answer behavioral questions", InterviewId = 3, Label = new List<LogLabel> { LogLabel.Behavioral, LogLabel.SoftSkill }, },
+      new Log() { Id = 20, LogbookId = 1, Title = "Log 2", Content = "Reviewed data analysis tools like Excel, Tableau, and Power BI", InterviewId = 3, Label = new List<LogLabel> { LogLabel.Technical, LogLabel.Design }, },
+      new Log() { Id = 21, LogbookId = 1, Title = "Log 1", Content = "Prepared for coding tests and problem-solving strategies", InterviewId = 4, Label = new List<LogLabel> { LogLabel.Coding, LogLabel.Technical }, },
+      new Log() { Id = 22, LogbookId = 1, Title = "Log 2", Content = "Analyzed data sets and created data reports", InterviewId = 4, Label = new List<LogLabel> { LogLabel.Documentation, LogLabel.Technical }, }
 
   );
 
