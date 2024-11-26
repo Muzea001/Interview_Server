@@ -96,6 +96,9 @@ namespace Interview_Server.Controllers
 
             }
             var passwordHasher = new PasswordHasher<User>();
+            var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
+            var defaultImageBase64 = Convert.ToBase64String(defaultImageBytes);
+            var defaultImageDataUrl = $"data:image/jpeg;base64,{defaultImageBase64}";
 
             var user = new User
             {
@@ -103,13 +106,14 @@ namespace Interview_Server.Controllers
                 Email = dto.Email,
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
-                ProfileImage = profileImageBytes
-
+                ProfileImage = defaultImageDataUrl 
             };
+            await _UserRepository.AddAsync(user);
+            await _context.SaveChangesAsync(); 
             var token = _authService.GenerateToken(user);
 
             //fixed
-            await _UserRepository.AddAsync(user);
+           
             var response = new CustomRegisterAPIReponse()
             {
                 user = user,
@@ -118,29 +122,29 @@ namespace Interview_Server.Controllers
             return Ok(response);
         }
 
-        [HttpPost("{userId}/UploadProfileImage")]
-        public async Task<ActionResult> UploadProfileImage(int userId, [FromForm] FileUploadRequest request)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            if (user == null)
-            {
-                return NotFound("User not found");
-            }
+        //[HttpPost("{userId}/UploadProfileImage")]
+        //public async Task<ActionResult> UploadProfileImage(int userId, [FromForm] FileUploadRequest request)
+        //{
+        //    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        //    if (user == null)
+        //    {
+        //        return NotFound("User not found");
+        //    }
 
-            if (request.ProfileImage == null || request.ProfileImage.Length == 0)
-            {
-                return BadRequest("Invalid image file");
-            }
+        //    if (request.ProfileImage == null || request.ProfileImage.Length == 0)
+        //    {
+        //        return BadRequest("Invalid image file");
+        //    }
 
-            using (var memoryStream = new MemoryStream())
-            {
-                await request.ProfileImage.CopyToAsync(memoryStream);
-                user.ProfileImage = memoryStream.ToArray();
-            }
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        await request.ProfileImage.CopyToAsync(memoryStream);
+        //        user.ProfileImage = memoryStream.ToArray();
+        //    }
 
-            await _context.SaveChangesAsync();
-            return Ok("Profile image uploaded successfully");
-        }
+        //    await _context.SaveChangesAsync();
+        //    return Ok("Profile image uploaded successfully");
+        //}
 
 
         [HttpPost("forgotPassword")]
