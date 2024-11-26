@@ -18,7 +18,6 @@ namespace Interview_Server.DTOs
             [Required]
             public string Mobile { get; set; }
 
-            [Required]
             public string ProfileImage { get; set; }
         
     }

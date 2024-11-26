@@ -36,9 +36,8 @@ namespace Interview_Server.Controllers
 
         [HttpPost("Register")]
         public async Task<ActionResult> Register(RegisterDTO dto)
-
         {
-            var errors = new List<String>();
+            var errors = new List<string>();
 
             if (!_validationService.ValidateUserName(dto.Username))
             {
@@ -47,9 +46,7 @@ namespace Interview_Server.Controllers
 
             if (!_validationService.ValidatePassword(dto.Password))
             {
-
                 errors.Add("Invalid Password. Must be at least 8 characters with uppercase, lowercase, digit, and special character.");
-
             }
 
             if (!_validationService.ValidateEmail(dto.Email))
@@ -72,33 +69,34 @@ namespace Interview_Server.Controllers
                 return BadRequest(new { Errors = errors });
             }
 
-            if ((errors.Any()))
+            var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SeedImages");
+            var defaultImagePath = Path.Combine(imageDirectory, "default1.jpg");
+            var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
+            var defaultImageBase64 = Convert.ToBase64String(defaultImageBytes);
+            var defaultImageDataUrl = $"data:image/jpeg;base64,{defaultImageBase64}";
+
+            string profileImageDataUrl = defaultImageDataUrl;
+
+            if (!string.IsNullOrEmpty(dto.ProfileImage))
+            {
+                try
+                {
+                    var profileImageBytes = Convert.FromBase64String(dto.ProfileImage);
+                    var profileImageBase64 = Convert.ToBase64String(profileImageBytes);
+                    profileImageDataUrl = $"data:image/jpeg;base64,{profileImageBase64}";
+                }
+                catch (FormatException)
+                {
+                    errors.Add("Invalid ProfileImage format. Must be a valid base64 string.");
+                }
+            }
+
+            if (errors.Any())
             {
                 return BadRequest(new { Errors = errors });
             }
 
-            var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SeedImages");
-            var defaultImagePath = Path.Combine(imageDirectory, "default1.jpg");
-            var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
-
-            var profileImageBytes = defaultImageBytes;
-
-            if (dto.ProfileImage != null && dto.ProfileImage.Length > 0){
-
-               try
-                {
-                    profileImageBytes = Convert.FromBase64String(Convert.ToBase64String(dto.ProfileImage));
-                }
-                catch (FormatException)
-                {
-                    errors.Add("Invalid ProfileImage format. Must be a valid image file.");
-                }
-
-            }
             var passwordHasher = new PasswordHasher<User>();
-            var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
-            var defaultImageBase64 = Convert.ToBase64String(defaultImageBytes);
-            var defaultImageDataUrl = $"data:image/jpeg;base64,{defaultImageBase64}";
 
             var user = new User
             {
@@ -106,17 +104,13 @@ namespace Interview_Server.Controllers
                 Email = dto.Email,
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
-                ProfileImage = dto.ProfileImage
+                ProfileImage = profileImageDataUrl
             };
-            
-            
 
             await _UserRepository.AddAsync(user);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
             var token = _authService.GenerateToken(user);
 
-            //fixed
-           
             var response = new CustomRegisterAPIReponse()
             {
                 user = user,
@@ -124,6 +118,7 @@ namespace Interview_Server.Controllers
             };
             return Ok(response);
         }
+
 
         //[HttpPost("{userId}/UploadProfileImage")]
         //public async Task<ActionResult> UploadProfileImage(int userId, [FromForm] FileUploadRequest request)
