@@ -67,7 +67,7 @@ namespace Interview_Server.Controllers
                 errors.Add("User with these credentials already exists");
             }
 
-            if ((errors.Any()))
+            if (errors.Any())
             {
                 return BadRequest(new { Errors = errors });
             }
@@ -79,6 +79,22 @@ namespace Interview_Server.Controllers
 
             var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SeedImages");
             var defaultImagePath = Path.Combine(imageDirectory, "default1.jpg");
+            var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
+
+            var profileImageBytes = defaultImageBytes;
+
+            if (dto.ProfileImage != null && dto.ProfileImage.Length > 0){
+
+               try
+                {
+                    profileImageBytes = Convert.FromBase64String(Convert.ToBase64String(dto.ProfileImage));
+                }
+                catch (FormatException)
+                {
+                    errors.Add("Invalid ProfileImage format. Must be a valid image file.");
+                }
+
+            }
             var passwordHasher = new PasswordHasher<User>();
             var defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
             var defaultImageBase64 = Convert.ToBase64String(defaultImageBytes);
