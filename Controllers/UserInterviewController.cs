@@ -113,6 +113,33 @@ namespace Interview_Server.Controllers
             return Ok(getInterviewDTO);
         }
 
+        [HttpGet("Archived")]
+        public async Task<ActionResult> getArchived()
+        {
+            Expression<Func<UserInterview, object>> includeInterview = ui => ui.Interview;
+            Expression<Func<UserInterview, bool>> predicate = ui => ui.isArchived == true;
+            var interviewList = await _userInterviewRepository.FindAsync(predicate,includeInterview);
+            if (interviewList == null)
+            {
+                return NotFound("Interview with that id doesnt exist");
+            }
+            var interviewDTOS = interviewList.Select(interview => new GetInterviewDTO
+            {
+                Id = interview.Id,
+                companyName = interview.Interview.CompanyName,
+                title = interview.Interview.Title,
+                address = interview.Interview.Address,
+                description = interview.Interview.Description,
+                duration = interview.DurationInMinutes,
+                time = interview.InterviewTime,
+                notes = interview.Notes,
+                status = InterviewStatus.AwaitingFeedback
+
+            }).ToList();
+
+            return Ok(interviewDTOS);
+        }
+
         [HttpPost("create-interview")]
         public async Task<ActionResult> createUserInterview(CreateInterviewDTO interview)
         {

@@ -90,8 +90,11 @@ namespace Interview_Server.Controllers
                 Email = dto.Email,
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
-                ProfileImage = defaultImageDataUrl 
+                ProfileImage = dto.ProfileImage
             };
+            
+            
+
             await _UserRepository.AddAsync(user);
             await _context.SaveChangesAsync(); 
             var token = _authService.GenerateToken(user);
@@ -266,16 +269,27 @@ namespace Interview_Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> EditUser(int id, User user)
+        public async Task<ActionResult<User>> EditUser(int id, RegisterDTO dto)
         {
-            if (id != user.Id)
+            var user = await _UserRepository.GetByIdAsync(id);
+            if (user == null)
             {
-                return BadRequest("UserId must match");
+                return NotFound("User not found");
             }
-            await _UserRepository.EditAsync(user);
-            return NoContent();
 
+            // Update user properties
+            user.Username = dto.Username;
+            user.Email = dto.Email;
+            user.Mobile = dto.Mobile;
+            user.ProfileImage = dto.ProfileImage;
+
+
+            await _UserRepository.EditAsync(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(user);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
