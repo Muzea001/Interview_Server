@@ -191,14 +191,18 @@ public class DatabaseContext : DbContext
             throw new FileNotFoundException($"Default image not found at {defaultImagePath}");
         }
         var defaultImageBytes = File.ReadAllBytes(defaultImagePath);
-        userList.Add(new User() { Id = 1, Username = "Ali Khan", PasswordHash = SeedData.HashPassword("ali123"), Email = "ali@example.com", Mobile = "1234", LogbookId = 1, ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 2, Username = "Muaath Zerouga", PasswordHash = SeedData.HashPassword("muaath123"), Email = "muaath@example.com", Mobile = "1881", LogbookId = 2, ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 3, Username = "John Ferdie", PasswordHash = SeedData.HashPassword("john123"), Email = "john@example.com", Mobile = "123", LogbookId = 3,ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 4, Username = "Magnus Brandsegg", PasswordHash = SeedData.HashPassword("magnus123"), Email = "magnus@example.com", Mobile = "786", LogbookId = 4 , ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 5, Username = "Sophia Miller", PasswordHash = SeedData.HashPassword("sophia123"), Email = "sophia@example.com", Mobile = "2250", LogbookId = 5, ProfileImage = defaultImageBytes });
-        userList.Add(new User() { Id = 6, Username = "David Johnson", PasswordHash = SeedData.HashPassword("david123"), Email = "david@example.com", Mobile = "4332", LogbookId = 6 , ProfileImage = defaultImageBytes });
+        var defaultImageBase64 = Convert.ToBase64String(defaultImageBytes);
+        var defaultImageDataUrl = $"data:image/jpeg;base64,{defaultImageBase64}";
+
+        userList.Add(new User() { Id = 1, Username = "Ali Khan", PasswordHash = SeedData.HashPassword("ali123"), Email = "ali@example.com", Mobile = "1234", LogbookId = 1, ProfileImage = defaultImageDataUrl });
+        userList.Add(new User() { Id = 2, Username = "Muaath Zerouga", PasswordHash = SeedData.HashPassword("muaath123"), Email = "muaath@example.com", Mobile = "1881", LogbookId = 2, ProfileImage = defaultImageDataUrl });
+        userList.Add(new User() { Id = 3, Username = "John Ferdie", PasswordHash = SeedData.HashPassword("john123"), Email = "john@example.com", Mobile = "123", LogbookId = 3, ProfileImage = defaultImageDataUrl });
+        userList.Add(new User() { Id = 4, Username = "Magnus Brandsegg", PasswordHash = SeedData.HashPassword("magnus123"), Email = "magnus@example.com", Mobile = "786", LogbookId = 4, ProfileImage = defaultImageDataUrl });
+        userList.Add(new User() { Id = 5, Username = "Sophia Miller", PasswordHash = SeedData.HashPassword("sophia123"), Email = "sophia@example.com", Mobile = "2250", LogbookId = 5, ProfileImage = defaultImageDataUrl });
+        userList.Add(new User() { Id = 6, Username = "David Johnson", PasswordHash = SeedData.HashPassword("david123"), Email = "david@example.com", Mobile = "4332", LogbookId = 6, ProfileImage = defaultImageDataUrl });
+
         return userList;
-       }
+    }
 
     public DbSet<User> Users { get; set; }
         public DbSet<Interview> Interviews { get; set; }

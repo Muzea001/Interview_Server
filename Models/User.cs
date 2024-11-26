@@ -11,7 +11,7 @@
         public int LogbookId { get; set; }
         public Logbook Logbook { get; set; }
 
-        public byte[] ProfileImage { get; set; }
+        public string ProfileImage { get; set; }
 
         public string? ResetToken { get; set; }
         public DateTime? ResetTokenExpiry { get; set; }
