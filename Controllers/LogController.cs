@@ -136,6 +136,7 @@ namespace Interview_Server.Controllers
 
                 logToEdit.Title = logDto.title;
                 logToEdit.Content = logDto.content;
+                logToEdit.Label = logDto.label;
                 await _logRepository.EditAsync(logToEdit);
                 return NoContent();
             }
