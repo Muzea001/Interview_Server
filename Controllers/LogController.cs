@@ -109,6 +109,7 @@ namespace Interview_Server.Controllers
                     Title = logDto.title,
                     Content = logDto.content,
                     LogbookId = logbookId,
+                    Label = logDto.label,
                     Logbook =logbook
                     
                 };
