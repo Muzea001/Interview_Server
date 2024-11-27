@@ -79,16 +79,18 @@ namespace Interview_Server.Controllers
 
             if (!string.IsNullOrEmpty(dto.ProfileImage))
             {
+                /*
                 try
                 {
                     var profileImageBytes = Convert.FromBase64String(dto.ProfileImage);
                     var profileImageBase64 = Convert.ToBase64String(profileImageBytes);
-                    profileImageDataUrl = $"data:image/jpeg;base64,{profileImageBase64}";
+                    profileImageDataUrl = profileImageBase64;
                 }
                 catch (FormatException)
                 {
                     errors.Add("Invalid ProfileImage format. Must be a valid base64 string.");
                 }
+                */
             }
 
             if (errors.Any())
@@ -104,7 +106,7 @@ namespace Interview_Server.Controllers
                 Email = dto.Email,
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
-                ProfileImage = profileImageDataUrl
+                ProfileImage = dto.ProfileImage
             };
 
             await _UserRepository.AddAsync(user);
