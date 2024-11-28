@@ -11,6 +11,7 @@ using System.Text;
 using Interview_Server.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Interview_Server.Services;
+using System;
 
 namespace Interview_Server.Controllers
 {
@@ -100,6 +101,8 @@ namespace Interview_Server.Controllers
 
             var passwordHasher = new PasswordHasher<User>();
 
+            // FIXME: Don't assign random logbook id
+            var random = new Random();
             var user = new User
             {
                 Username = dto.Username,
@@ -107,8 +110,10 @@ namespace Interview_Server.Controllers
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
                 ProfileImage = dto.ProfileImage,
-                Logbook = new Logbook()
-
+                LogbookId = random.Next(1, 1000),
+                Logbook = new Logbook {
+                    Title = $"{dto.Username}'s logbook"
+                }
             };
 
             await _UserRepository.AddAsync(user);
