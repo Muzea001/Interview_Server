@@ -21,7 +21,7 @@ namespace Interview_Server.Controllers
         }
         
         [HttpGet("InterviewNotes/{userInterviewId}")]
-        public async Task<IEnumerable<Note>> GetNotesByInterviewId(int userInterviewId)
+        public async Task<IEnumerable<GetNoteDTO>> GetNotesByInterviewId(int userInterviewId)
         {
             try
             {
@@ -32,12 +32,13 @@ namespace Interview_Server.Controllers
 
                 var getNoteDtos = notes.Select(n => new GetNoteDTO
                 {
+                    UserInterviewId = n.UserInterviewId,
                     title = n.Title,
                     content = n.Content,
                     status = n.Status
                 });
                 Console.WriteLine("Query executed successfully, returning notes.");
-                return notes;
+                return getNoteDtos;
             }
             catch (Exception ex)
             {

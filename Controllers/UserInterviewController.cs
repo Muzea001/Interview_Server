@@ -113,11 +113,11 @@ namespace Interview_Server.Controllers
             return Ok(getInterviewDTO);
         }
 
-        [HttpGet("Archived/{UserInterviewId}")]
-        public async Task<ActionResult> getArchived(int UserInterviewId)
+        [HttpGet("Archived/{UserId}")]
+        public async Task<ActionResult> getArchived(int UserId)
         {
             Expression<Func<UserInterview, object>> includeInterview = ui => ui.Interview;
-            Expression<Func<UserInterview, bool>> predicate = ui => ui.isArchived == true;
+            Expression<Func<UserInterview, bool>> predicate = ui => ui.isArchived == true && ui.UserId == UserId;
             var interviewList = await _userInterviewRepository.FindAsync(predicate, includeInterview);
             if (interviewList == null)
             {
@@ -140,6 +140,8 @@ namespace Interview_Server.Controllers
             return Ok(interviewDTOS);
         }
 
+
+
         [HttpPut("ArchiveInterview/{id}")]
         public async Task<ActionResult> ArchiveInterview(int id)
         {
@@ -149,6 +151,20 @@ namespace Interview_Server.Controllers
                 return NotFound("Interview with that id doesnt exist");
             }
             userInterview.isArchived = true;
+            await _userInterviewRepository.EditAsync(userInterview);
+            return Ok(userInterview);
+
+        }
+
+        [HttpPut("UnarchiveInterview/{id}")]
+        public async Task<ActionResult> UnarchiveInterview(int id)
+        {
+            var userInterview = await _userInterviewRepository.GetByIdAsync(id);
+            if (userInterview == null)
+            {
+                return NotFound("Interview with that id doesnt exist");
+            }
+            userInterview.isArchived = false;
             await _userInterviewRepository.EditAsync(userInterview);
             return Ok(userInterview);
 
