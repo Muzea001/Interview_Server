@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Interview_Server.Controllers
 {
-    [ApiController] 
+    [ApiController]
     [Route("id/[Controller]")]
     public class UserInterviewController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace Interview_Server.Controllers
         private readonly IRepository<Interview> _InterviewRepository;
         private readonly IUserInterview _userInterview;
         private readonly InterviewValidationService _interviewValidationService;
-        private readonly IHubContext<NotificationHub> _hubContext;  
+        private readonly IHubContext<NotificationHub> _hubContext;
         public UserInterviewController(IRepository<UserInterview> userInterviewRepository,
             IUserInterview userInterivew, IRepository<User> userRepository,
             IRepository<Interview> interviewRepository,
@@ -52,8 +52,8 @@ namespace Interview_Server.Controllers
                 time = ui.InterviewTime,
                 notes = ui.Notes,
                 status = ui.Status,
-                
-            }); 
+
+            });
             return Ok(getInterviewDTOS);
         }
 
@@ -86,7 +86,7 @@ namespace Interview_Server.Controllers
             return Ok(resultDTOs);
         }
 
-        
+
         [HttpGet("{UserInterviewId}")]
         public async Task<ActionResult> getUserInterviewById(int UserInterviewId)
         {
@@ -118,7 +118,7 @@ namespace Interview_Server.Controllers
         {
             Expression<Func<UserInterview, object>> includeInterview = ui => ui.Interview;
             Expression<Func<UserInterview, bool>> predicate = ui => ui.isArchived == true;
-            var interviewList = await _userInterviewRepository.FindAsync(predicate,includeInterview);
+            var interviewList = await _userInterviewRepository.FindAsync(predicate, includeInterview);
             if (interviewList == null)
             {
                 return NotFound("Interview with that id doesnt exist");
@@ -138,6 +138,20 @@ namespace Interview_Server.Controllers
             }).ToList();
 
             return Ok(interviewDTOS);
+        }
+
+        [HttpPut("ArchiveInterview/{id}")]
+        public async Task<ActionResult> ArchiveInterview(int id)
+        {
+            var userInterview = await _userInterviewRepository.GetByIdAsync(id);
+            if (userInterview == null)
+            {
+                return NotFound("Interview with that id doesnt exist");
+            }
+            userInterview.isArchived = true;
+            await _userInterviewRepository.EditAsync(userInterview);
+            return Ok(userInterview);
+
         }
 
         [HttpPost("create-interview")]

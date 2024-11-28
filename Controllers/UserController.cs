@@ -104,7 +104,9 @@ namespace Interview_Server.Controllers
                 Email = dto.Email,
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
-                ProfileImage = profileImageDataUrl
+                ProfileImage = profileImageDataUrl,
+                Logbook = new Logbook()
+
             };
 
             await _UserRepository.AddAsync(user);
