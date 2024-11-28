@@ -21,13 +21,15 @@ namespace Interview_Server.Controllers
         }
         
         [HttpGet("InterviewNotes/{userInterviewId}")]
-        public async Task<IEnumerable<GetNoteDTO>> GetNotesByInterviewId(int userInterviewId)
+        public async Task<IEnumerable<Note>> GetNotesByInterviewId(int userInterviewId)
         {
             try
             {
 
                 Expression<Func<Note, bool>> predicate = ui => ui.UserInterviewId == userInterviewId;
-                var notes = await _noteRepository.GetAllAsync();
+                Expression<Func<Note, object>> includeProperty = note => note.UserInterview;
+                var notes = await _noteRepository.FindAsync(predicate, includeProperty);
+
                 var getNoteDtos = notes.Select(n => new GetNoteDTO
                 {
                     title = n.Title,
@@ -35,7 +37,7 @@ namespace Interview_Server.Controllers
                     status = n.Status
                 });
                 Console.WriteLine("Query executed successfully, returning notes.");
-                return getNoteDtos;
+                return notes;
             }
             catch (Exception ex)
             {
