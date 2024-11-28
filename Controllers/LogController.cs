@@ -129,6 +129,7 @@ namespace Interview_Server.Controllers
             try
             {
                 var logToEdit = await _logRepository.GetByIdAsync(logId);
+                var newInterview = await _interviewRepository.GetByIdAsync(logDto.interviewId);
                 if (logToEdit == null)
                 {
                     return NotFound("Log not found");
@@ -136,7 +137,8 @@ namespace Interview_Server.Controllers
 
                 logToEdit.Title = logDto.title;
                 logToEdit.Content = logDto.content;
-                logToEdit.Interview.Id = logDto.interviewId;
+                logToEdit.Interview = newInterview;
+                logToEdit.InterviewId = newInterview.Id;
                 logToEdit.Label = logDto.label;
                 await _logRepository.EditAsync(logToEdit);
                 return NoContent();
