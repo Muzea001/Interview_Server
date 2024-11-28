@@ -113,8 +113,8 @@ namespace Interview_Server.Controllers
             return Ok(getInterviewDTO);
         }
 
-        [HttpGet("Archived")]
-        public async Task<ActionResult> getArchived(int id)
+        [HttpGet("Archived/{UserInterviewId}")]
+        public async Task<ActionResult> getArchived(int UserInterviewId)
         {
             Expression<Func<UserInterview, object>> includeInterview = ui => ui.Interview;
             Expression<Func<UserInterview, bool>> predicate = ui => ui.isArchived == true;
