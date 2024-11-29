@@ -171,7 +171,7 @@ namespace Interview_Server.Controllers
 
         }
 
-        [HttpPost("create-interview")]
+        [HttpPost("create-interview/{userId}")]
         public async Task<ActionResult> createUserInterview(CreateInterviewDTO interview, int userId)
         {
             var errors = new List<String>();

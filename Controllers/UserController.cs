@@ -121,17 +121,10 @@ namespace Interview_Server.Controllers
             user.LogbookId = user.Logbook.Id;
             await _context.SaveChangesAsync();
             var token = _authService.GenerateToken(user);
-            var userDTO = new GetUserDTO
-            {
-                Username = user.Username,
-                Email = user.Email,
-                Mobile = user.Mobile,
-                ProfileImage = user.ProfileImage,
-                LoogbookId = user.LogbookId
-            };
+
             var response = new CustomRegisterAPIReponse()
             {
-                user = userDTO,
+                user = user,
                 Token = token
             };
             return Ok(response);
