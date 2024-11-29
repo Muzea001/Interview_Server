@@ -110,8 +110,8 @@ namespace Interview_Server.Controllers
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
                 ProfileImage = dto.ProfileImage,
-                LogbookId = random.Next(1, 1000),
-                Logbook = new Logbook {
+                Logbook = new Logbook
+                {
                     Title = $"{dto.Username}'s logbook"
                 }
             };
@@ -119,10 +119,17 @@ namespace Interview_Server.Controllers
             await _UserRepository.AddAsync(user);
             await _context.SaveChangesAsync();
             var token = _authService.GenerateToken(user);
-
+            var userDTO = new GetUserDTO
+            {
+                Username = user.Username,
+                Email = user.Email,
+                Mobile = user.Mobile,
+                ProfileImage = user.ProfileImage,
+                LoogbookId = user.LogbookId
+            };
             var response = new CustomRegisterAPIReponse()
             {
-                user = user,
+                user = userDTO,
                 Token = token
             };
             return Ok(response);
