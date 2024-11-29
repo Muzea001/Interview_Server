@@ -222,22 +222,21 @@ namespace Interview_Server.Controllers
                 
             };
 
-            await _InterviewRepository.AddAsync(newInterview);
 
-            UserInterview userInterview = new UserInterview
+            var userInterview = new UserInterview
             {
                 User = user,
                 UserId = user.Id,
                 Status = InterviewStatus.AwaitingFeedback,
-                Interview = newInterview,
-                InterviewId = newInterview.Id,
                 InterviewTime = interview.time.Value,
                 DurationInMinutes = interview.duration,
                 Notes = new List<Note>(),
-                isArchived = false
-                
-            };
+                isArchived = false,
+                Interview = newInterview
 
+
+            };
+            newInterview.UserInterviews.Add(userInterview);
             await _userInterviewRepository.AddAsync(userInterview);
             var notificationMessage = $"A new interview has been created with ID {userInterview.InterviewId}.";
             await _hubContext.Clients.All.SendAsync(notificationMessage);   
