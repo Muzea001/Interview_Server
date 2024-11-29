@@ -4,6 +4,8 @@ namespace Interview_Server.DTOs
 {
     public class GetNoteDTO
     {
+
+        public int Id { get; set; }
         public int UserInterviewId { get; set; }
         public string title { get; set; }
 

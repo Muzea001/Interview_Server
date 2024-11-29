@@ -32,6 +32,7 @@ namespace Interview_Server.Controllers
 
                 var getNoteDtos = notes.Select(n => new GetNoteDTO
                 {
+                    Id = n.Id,
                     UserInterviewId = n.UserInterviewId,
                     title = n.Title,
                     content = n.Content,
@@ -61,6 +62,8 @@ namespace Interview_Server.Controllers
                 {
                     var noteDTO = new GetNoteDTO
                     {
+                        Id = note.Id,
+                        UserInterviewId = note.UserInterviewId,
                         title = note.Title,
                         content = note.Content,
                         status = NoteStatus.NotReviewed
