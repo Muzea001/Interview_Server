@@ -171,8 +171,8 @@ namespace Interview_Server.Controllers
 
         }
 
-        [HttpPost("create-interview")]
-        public async Task<ActionResult> createUserInterview(CreateInterviewDTO interview)
+        [HttpPost("create-interview/{userId}")]
+        public async Task<ActionResult> createUserInterview(CreateInterviewDTO interview, int userId)
         {
             var errors = new List<String>();
 
@@ -206,7 +206,7 @@ namespace Interview_Server.Controllers
                 return BadRequest(errors);
             }
 
-            var user = await _UserRepository.GetByIdAsync(1);
+            var user = await _UserRepository.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound("User not found");
