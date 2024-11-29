@@ -7,11 +7,6 @@
             return !string.IsNullOrWhiteSpace(title) && title.Length >= 3 && title.Length <= 50;
         }
 
-        public bool ValidateDescription(string description)
-        {
-            return !string.IsNullOrWhiteSpace(description) && description.Length >= 5 && description.Length <= 500;
-        }
-
         public bool ValidateTime(DateTime? time)
         {
             return time.HasValue && time.Value > DateTime.Now;

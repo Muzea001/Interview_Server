@@ -17,6 +17,8 @@ namespace Interview_Server.DTOs
 
         public string companyName { get; set; }
 
+        public bool isArchived { get; set; }
+
         public List<Note> notes { get; set; }
 
     }
