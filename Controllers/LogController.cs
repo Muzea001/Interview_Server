@@ -87,12 +87,12 @@ namespace Interview_Server.Controllers
             }
         }
 
-        [HttpPost("{interviewId}/{logbookId}")]
-        public async Task<ActionResult> CreateLog(int interviewId, int logbookId, LogDTO logDto)
+        [HttpPost("/{logbookId}")]
+        public async Task<ActionResult> CreateLog( int logbookId, LogDTO logDto)
         {
             try
             {
-                var userInterview = await _interviewRepository.GetByIdAsync(interviewId);
+                var userInterview = await _interviewRepository.GetByIdAsync(logDto.interviewId);
                 if (userInterview == null)
                 {
                     return NotFound("UserInterview not found");
@@ -104,7 +104,7 @@ namespace Interview_Server.Controllers
                 }
                 Log newLog = new Log
                 {
-                    InterviewId = interviewId,
+                    InterviewId = logDto.interviewId,
                     Interview = userInterview,
                     Title = logDto.title,
                     Content = logDto.content,
