@@ -52,7 +52,8 @@ namespace Interview_Server.Controllers
                 time = ui.InterviewTime,
                 notes = ui.Notes,
                 status = ui.Status,
-
+                isArchived = ui.isArchived
+               
             });
             return Ok(getInterviewDTOS);
         }
@@ -180,11 +181,6 @@ namespace Interview_Server.Controllers
                 errors.Add("Invalid title. Title must be between 3 and 50 characters long");
             }
 
-            if (!_interviewValidationService.ValidateDescription(interview.description))
-            {
-                errors.Add("Invalid description. Description must be between 5 and 500 characters long");
-            }
-
             if (!_interviewValidationService.ValidateTime(interview.time))
             {
                 errors.Add("Invalid time. Time must be in the future");
@@ -284,11 +280,6 @@ namespace Interview_Server.Controllers
             if (!_interviewValidationService.ValidateTitle(interview.title))
             {
                 errors.Add("Invalid title. Title must be between 3 and 50 characters long");
-            }
-
-            if (!_interviewValidationService.ValidateDescription(interview.description))
-            {
-                errors.Add("Invalid description. Description must be between 5 and 500 characters long");
             }
 
             if (!_interviewValidationService.ValidateTime(interview.time))
