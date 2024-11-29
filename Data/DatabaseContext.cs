@@ -226,13 +226,13 @@ public class DatabaseContext : DbContext
             new Note() { Id = 16, Title = "Data analysis feedback", Content = "Worked on cleaning data sets for the upcoming interview", UserInterviewId = 8, Status = NoteStatus.NotReviewed }
         );
     }
-
+    
     private List<User> SeedImageForUsers()
     {
         var userList = new List<User>();
         var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SeedImages");
         var defaultImagePath = Path.Combine(imageDirectory, "default1.jpg");
-
+        
         if (!File.Exists(defaultImagePath))
         {
             throw new FileNotFoundException($"Default image not found at {defaultImagePath}");
