@@ -107,7 +107,7 @@ namespace Interview_Server.Controllers
                 PasswordHash = passwordHasher.HashPassword(null, dto.Password),
                 Mobile = dto.Mobile,
                 ProfileImage = dto.ProfileImage,
-                Logbook = new Logbook()
+                Logbook = new Logbook{ Title = dto.Username + "'s logbook" }
 
             };
 
