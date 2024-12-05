@@ -291,7 +291,7 @@ namespace Interview_Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> EditUser(int id, RegisterDTO dto)
+        public async Task<ActionResult<User>> EditUser(int id, UpdateUserDTO dto)
         {
             var user = await _UserRepository.GetByIdAsync(id);
             if (user == null)
