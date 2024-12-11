@@ -317,10 +317,11 @@ namespace Interview_Server.Controllers
             }
 
             userInterview.Interview.Title = interview.title ?? userInterview.Interview.Title;  
-            userInterview.Interview.Description = interview.description ?? userInterview.Interview.Description;
-            userInterview.Interview.Address = interview.address ?? userInterview.Interview.Address;
             userInterview.Interview.CompanyName = interview.companyName ?? userInterview.Interview.CompanyName;
-            userInterview.InterviewTime = interview.time ?? userInterview.InterviewTime;            
+            userInterview.Interview.Address = interview.address ?? userInterview.Interview.Address;
+            userInterview.InterviewTime = interview.time ?? userInterview.InterviewTime;
+            userInterview.DurationInMinutes = interview.duration;
+            userInterview.Interview.Description = interview.description ?? userInterview.Interview.Description;
 
             await _userInterviewRepository.EditAsync(userInterview);
 
